@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css"/>
+	<style>
+		article{
+			margin-top:2em;
+			background:#E6E6E6;
+			border-radius: 0.2em;
+			padding:2em;
+		}
+	</style>
+</head>
+<body>
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container-fluid">
+
+				<a class="brand" href="">Empowerment Software</a>
+				<ul class="nav">
+					<li><a href="">Introduction</a></li>
+					<li><a href="#webGP">WebGP</a></li>
+					<li><a href="#chemGP">ChemGP</a></li>
+					<li><a href="#carrotStick">CarrotStick</a></li>
+					<li><a href="">Trext</a></li>
+					<li><a href="">Opinion Essay</a></li>
+					<li><a href="">Conclusions</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<br/><br/>
+	<div class="container">
+		<article id="webGP">
+			<div class="page-header">
+				<h1>webGP</h1>
+			</div>
+			<p class="lead">webGP is a web-based, javascript tool that allows anyone to do symbolic regression GP runs.</p>
+			<iframe src="http://player.vimeo.com/video/51937862" style="" class="thumbnail" width="675" height="379" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+			<section>
+				<h2>What is GP</h2>
+				<p>Genetic programming is a technique that allows computers to write programs. The genetic programmer must first write a function that can evaluate program-candidates. This is called the fitness function. This function, when passed a candidate program, must return some form of score. The genetic programmer must also build a random code generator that can produce random programs. With these two components one can build the first steps of a GP system by generating many random programs and evaluating them with the fitness function. Typically, none of the random programs come close to a good score, but some are better than others. Thus far this is mildly interesting, but not powerful. In order to leverage principals of Darwinian evolution, programs must be able to "reproduce."</p>
+
+				<p>A simple genetic programming system is completed when programs can mutate and/or breed with one another. A mutate function takes a program and returns a modified version of its self. A crossover function takes two programs, removes a piece of one, and replaces it with a piece of the other. To run the finished GP system, generate a series of random programs. Rate their fitness'. Pick some of the better programs and breed them to produce a new series. Each series is called a generation. If the system is working properly programs' fitness should improve over time.</p>
+
+				<p>Genetic programming is a deep and rich field. There are countless papers published on variations of each of the concepts explained above. </p>
+			</section>
+			<section>
+				<h2>What is Symbolic Regression</h2>
+				<p>Symbolic regression is a GP technique that attempts mathematically explain data. In some ways it is analogous to linear regression. In linear regression 2 dimensional (x, y) data is modeled by a linear function. Symbolic regression is similar except there are no requirements on the type of function and the data can be n-dimensional (x, y, z, ...). Functions are generated through GP. Symbolic regression is powerful when searching through complex data.</p>
+			</section>
+			<section>
+				<h2>Motivation</h2>
+				<p>As scientific tests become less expensive and more automated scientists are facing increasingly large datasets (http://europepmc.org/abstract/MED/19620020). Symbolic regression has potential as a tool for scientists to make sense of the mess they're in. But, it faces a problem. The barrier to entry is too high. This was the inspiration for building webGP. I wanted to give people a way to run GP on data they have sitting in an excel file or database.</p>
+			</section>
+			<section>
+
+				<h2>Features</h2>
+				<div class="row">
+					<div class="span3"><strong>Excel-like data table for data input</strong></div>
+					<div class="span9"><p>Excel-like data table for data input. The first row will be the variable names, each row will contain values. The last column will be the fitness cases. These are the outputs that the fitness function is comparing against. See the table below for an example. In the example we have routine measurements a and b. We know c  in the cases described but we want a function that can predict c given a and b.</p></div>
+				</div>
+				<div class="row">
+					<div class="span3"><strong>Function choice and GP parameters</strong></div>
+					<div class="span9"><p>Function choices and GP parameters. I made an interface that allows the user to decide what mathematical operations the evolved programs may employ. The user can also specify parameters about the run (its length, size of generations, etc).</p></div>
+				</div>
+				<div class="row">
+					<div class="span3"><strong>Visualization of results</strong></div>
+					<div class="span9">
+						<ul>
+							<li>
+								Real time
+								<ul>
+									<li>Visualizing the best error in each generation as the data comes in</li>
+									<li>Visualizing the best program's size as it is generated
+</li>
+								</ul>
+							</li>
+							<li>
+								After the run
+								<ul>
+									<li>Best program's predictions against fitness cases. A graph that plots two series. The fitness cases and the best program's prediction of what they should be. This gives the user a rough understanding of how good the best program is.</li>
+									<li>Piano plot. This graph shows each individual program's score plotted on the y-axis and its (arbitrary) ID on the x axis. The IDs are based on score and generation. Each point is shaded based on its length. This plot can give the user a sense of the diversity of the population in each generation</li>
+									<li>Size vs error vs age. This graph shows how the relationship between size of programs, their error and their generation. It gives the user a sense of how how size and error changed over generation time.</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+			<section>
+				<h2>Process of building</h2>
+				<p>At first, I started building a simple GP engine in javascript as a way of learning GP. I had been working on other projects in Clojure, but didn't have a good feel of the language. I didn't want to let this technical clumsiness inhibit my learning of GP. Once I had the engine working, I realized how easy it would be to make a web front-end. First I just made the data table and GP options. Then, I wanted to see how the process was going in real time. I started learning D3.js, a graphing library. I made some classes for bar charts and scatterplots--the two types of visualization I eventually wanted. With those classes I made some powerful graphs.</p>
+			</section>
+			<section>
+				<h2>Challenges</h2>
+				<p>When webGP is used for small problems, its great. Chrome's V8 javascript engine is lightning fast, and webGP is written well enough to harness its speed. But, because I wrote webGP to store and analyze every program ever produced by GP, it eats up a lot of RAM. If you have many generations, and each one is very large, it crashes the browser tab. Also, some of the visualizations techniques performed after the run need to output a point for every program. This can take some time. I did make a modification to have the scatterplots only reflect a representative sample of the population. This improved speed considerably.</p>
+			</section>
+			<section>
+				<h2>What would come next</h2>
+				<p>
+					To mitigate the memory problem, I would send the programs to a <a href="http://nodejs.org/" target="_blank">node.js</a> server to be stored. Node.js has the capacity for real time client-server interaction with the use of websockets. This means once programs are created and evaluated, they can be stored elsewhere. This frees the client to run as long as it needs to. It also opens up the door for multiple computers all running the same problem. 
+				</p>
+			</section>
+
+			<!-- <iframe src="http://player.vimeo.com/video/51937862" width="400" height="300" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> -->
+
+			<!-- TODO 
+				1. Add citation to GP book
+			-->
+		</article>
+		<article id="chemGP">
+			<div class="page-header">
+				<h1>ChemGP</h1>
+			</div>
+			<section>
+				<p>In this project I sought to find a mathematical relationships between several attributes of molecules and their reaction rate constant in a cycloaddion reaction. I used symbolic regression GP in the search. Cycloadditions are reactions that make a new hydrocarbon ring (or "cycle"). They are synthetically powerful for many reasons, but here I will focus on their utility in "bioorthogonal" chemistry (BC). BC is is the study of synthetic chemical reactions that run inside an organism but do not interfere with the endogenous biochemical reactions. Applications of BC include attaching florescent molecules to proteins without the standard transgenic mutations required for the technique. These "tagging" reactions could be used by biologists or clinicians for diagnostic purposes. Bioorthogonal chemistry might one day be used for therapeutic purposes.</p>
+
+<p>In order to be useful BCs must adhere to a rather stringent set of requirements. They must react selectively (have little to no side reactions). They must not be cytotoxic (deadly to the tissue or organism). They must be kinetically accessible (they must happen quickly enough and in high enough yield to be measured).  Many of the synthetic techniques used by organic chemists require there to be no water in the reaction. BC reactions must run in water. Organic chemists can control the temperature, pressure, and pH of their reactions, BC reactions must be under physiological conditions. These criteria make BC reactants hard to find.</p>
+
+<p>In this project I used symbolic regression GP to search for a mathematical relationship between known properties of BC cycloadditions and their reaction rate constants (k). In order to start with GP, I had to build a significant amount of cheminformatic infrastructure. Essentailly, I needed a database of reactions. I needed many parameters about each molecule in the reaction--two reactants, a solvent, and a product. I also needed information about the reaction (its pressure, temperature, reaction rate).</p>
+
+<p>I build the database with PHP/MySQL and javascript. I employed the <a target="_blank" href="http://web.chemdoodle.com">Chemdoodle web framework</a>, an HTML 5/javascript chemistry toolkit. They have an API service which was purchased for chemical computations. Using chemdoodle, I manually drew dozens of reactions from two papers and entered the reaction parameters. Chemdoodle's API calculated parameters for each molecule and I wrote code to save these calculations into MySQL.</p>
+
+<p>In order to get the data in a format that allowed webGP to be used, I needed to write code to translate the multidimensional MySQL data into a linear list. Each reaction consisted of four molecule rows, one reaction row, and several rows to indicate the relationship. Each row had up to 16 fields. I had to translate this information into a simple list. To do this I prefixed all molecule data with the role it was playing in the reaction (diene-molecular weight, dieneophile molecular weight, solvent molecular weight, etc). From this I was able to create a simple table representing all the data. From this I used webGP to generate functions that took every reaction variable and generate the reaction rate constant.</p>
+
+<p>I found that the webGP engine that had worked well for simple problems was not effective with this problem. The programs evolved, but plateaued early in the run (they did not continue to improve). In order to improve the GP performance I patched webGP to include "<a href="http://faculty.hampshire.edu/lspector/pubs/trivial-geography-toappear.pdf" target="_blank">trivial geography</a>" in the mating functions. This technique selects the most fit programs from each area in the population, not the population at large. This allows for slightly less fit programs to survive longer and preserves diversity in the population. </p>
+
+<p>The implementation of trivial geography made the runs' plateaus come later, and their fitness' improve.</p>
+
+<p>I also needed to modify the code to include separate data categories for training and validation of the programs. Certain reactions were randomly selected to train (be used in the fitness evaluation) while others were left to evaluate the fitness of best programs from the run. Because these data were not used in the training, their incorporation reduces the degree to which the evolved programs are biased towards the dataset. </p>
+
+<p>I presented this project at a <a href="http://4cbc.cs.umass.edu/" target="_blank">4CBC</a> event in November 2012. The slides from this presentation are avalible <a href="http://stout.hampshire.edu/~zan09/div/p1113/#0">here</a>.
+			</section>
+		</article>
+	</div>
+</body>
+</html>
