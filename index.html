@@ -54,19 +54,19 @@
 
 			<section>
 				<h2>What is GP</h2>
-				<p>Genetic programming is a technique that allows computers to write programs. The genetic programmer must first write a function that can evaluate program-candidates. This is called the fitness function. This function, when passed a candidate program, must return some form of score. The genetic programmer must also build a random code generator that can produce random programs. With these two components one can build the first steps of a GP system by generating many random programs and evaluating them with the fitness function. Typically, none of the random programs come close to a good score, but some are better than others. Thus far this is mildly interesting, but not powerful. In order to leverage principals of Darwinian evolution, programs must be able to "reproduce."</p>
+				<p>Genetic programming is a technique that allows computers to write programs. The genetic programmer must first write a function that can evaluate program-candidates. This is called the fitness function. This function evaluates a candidate program and returns some form of score. The genetic programmer must also build a random code generator that can produce random programs. With these two components, one can build the first steps of a GP system by generating many random programs and evaluating them with the fitness function. Typically, none of the random programs come close to a good score, but some are better than others. Thus far, this is mildly interesting, but not powerful. In order to leverage principals of Darwinian evolution, programs must be able to "reproduce."</p>
 
-				<p>A simple genetic programming system is completed when programs can mutate and/or breed with one another. A mutate function takes a program and returns a modified version of its self. A crossover function takes two programs, removes a piece of one, and replaces it with a piece of the other. To run the finished GP system, generate a series of random programs. Rate their fitness'. Pick some of the better programs and breed them to produce a new series. Each series is called a generation. If the system is working properly programs' fitness should improve over time.</p>
+				<p>A simple genetic programming system is completed when programs can mutate and/or breed with one another. A mutate function takes a program and returns a modified version of itself. A crossover function takes two programs, removes a piece of one and replaces it with a piece of the other. To run the finished GP system, generate a series of random programs. Rate their fitness'. Pick some of the better programs and breed them to produce a new series. Each series is called a generation. If the system is working properly, the programs' fitness should improve over time.</p>
 
 				<p>Genetic programming is a deep and rich field. There are countless papers published on variations of each of the concepts explained above. </p>
 			</section>
 			<section>
 				<h2>What is Symbolic Regression</h2>
-				<p>Symbolic regression is a GP technique that attempts mathematically explain data. In some ways it is analogous to linear regression. In linear regression 2 dimensional (x, y) data is modeled by a linear function. Symbolic regression is similar except there are no requirements on the type of function and the data can be n-dimensional (x, y, z, ...). Functions are generated through GP. Symbolic regression is powerful when searching through complex data.</p>
+				<p>Symbolic regression is a GP technique that attempts mathematically explain data. In some ways, it is analogous to linear regression. In linear regression two-dimensional (x, y) data is modeled by a linear function. Symbolic regression is similar except there are no requirements on the type of function and the data can be n-dimensional (x, y, z, ...). Functions are generated through GP. Symbolic regression is powerful when searching through complex data.</p>
 			</section>
 			<section>
 				<h2>Motivation</h2>
-				<p>As scientific tests become less expensive and more automated scientists are facing increasingly large datasets (http://europepmc.org/abstract/MED/19620020). Symbolic regression has potential as a tool for scientists to make sense of the mess they're in. But, it faces a problem. The barrier to entry is too high. This was the inspiration for building webGP. I wanted to give people a way to run GP on data they have sitting in an excel file or database.</p>
+				<p>As scientific tests become less expensive and more abundant, scientists are facing increasingly large datasets (http://europepmc.org/abstract/MED/19620020). Symbolic regression has potential as a tool for scientists to make sense of the mess they're in. But, it faces a problem. The barrier to entry is too high. This was the inspiration for building webGP. I wanted to give people a way to run GP on data they have sitting in an excel file or database.</p>
 			</section>
 			<section>
 
@@ -169,9 +169,52 @@
 				</p>
 			</blockquote>
 
-			<p>Carrot Stick was built with PHP/MySQL + Javascript. It uses the <a href="http://twilio.com" target="_blank">Twilio</a> API to recieve and make phone calls.
+			<p>Carrot Stick was unanimously chosen by the judges to receive the top price. Our group was elated. We were surprised by the degree to which our collaboration had improved our final product. We were all surprised by how good Carrot Stick looked after just two days.</p>
+
+<p>Kira decided to keep working. She changed her Div III. She wanted to run a feasibility study on real smokers to see if Carrot Stick really helped people. To do this, I had to do some ongoing work. I built out different views for the app for participants in the control group and participants in the treatment group. I also designed and developed a survey form that combined three tobacco dependance measurements that Kira found. Finally, after noticing that people forgot to call into Carrot Stick, I made an SMS reminder system.</p>
+
+<p>Carrot Stick was built with PHP, MySQL, the <a href="http://www.twilio.com/voice" target="_blank">Twilio voice API</a>, <a href="http://jquery.com" target="_blank">jQuery</a>, and <a href="http://underscorejs.org/" target="_blank">underscore.js</a>. It was deployed on the <a href="http://en.wikipedia.org/wiki/Platform_as_a_service" target="_blank">PaaS</a>	 <a href="http://heroku.com" target="_blank">Heroku</a>. It was the first time I deployed on a PaaS.</p>
 			
 	
+		</article>
+
+		<article id="trext">
+			<div class="page-header">
+				<h1>Trext</h1>
+			</div>
+			<div class="row">
+				<div class="span3">
+					<p>After our group's success in the first Hackathon, we decided to try again. We heard about Hacking Medicine, an event at Massachusetts General Hospital hosted by the Massachusetts Institute of Technology. The event's theme was global health. They were looking for groups to build software or hardware that could have an impact globally. </p>
+					<p>Before the event, we brainstormed for our idea. On our mind was the concept of the clinical checklist as presented by Dr. Atul Gawande, author of <a href="http://www.thedailyshow.com/watch/wed-february-3-2010/atul-gawande" target="_blank">The Checklist Manifesto</a>.</p>
+				</div>
+				<div class="span8">
+					<img src="zeke-md-pres.jpg" class="img-polaroid"/>
+				</div>
+			</div>
+			<br/>
+			<p>Dr. Gawande, a surgeon at Brigham and Woman's hospital describes how two minute checklists before certain procedures and operations can cut complications and death by double-digit percentages. As medicine's complexity has increased so have routine errors. Even experts with tens of thousands of hours of training make simple mistakes when confronted with complex, time-sensitive choices. Checklists can insure that routine precautions are always observed in clinical settings.</p>
+
+			<p>Also on our minds was the limited technology in many low and middle income countries. Building a webapp for checklists was tempting, but our target populations don't have reliable or fast internet. However, some technology has penetrated nearly the entire planet. Most people have access to cell phones with SMS, for example.</p>
+
+			<p>We thought about building an SMS checklist builder. It would be great for data collection and updating checklists in a way that paper wouldn't. But, SMS is cumbersome, especially on older phones. One of Dr. Gawande's 2 minute checklists might take 4 or 6 minutes by text. More importantly, some of the questions weren't relevant.</p>
+
+			<div class="row">
+				<div class="span4">
+					<p>We stumbled on the idea of using the format of a decision tree to build these checklists. Decision trees can achieve complexity with a short path by eliminating irrelevant questions. We envisioned a simple GUI that would allow basic computer users to build SMS text apps. </p>
+					<p>At the event we used a javascript library called JSPlumb as the backbone of our interface. On the server side we used PHP and MySQL. The SMS functionality was achieved with the Twilio SMS API. It was an ambitious project for a two-day competition. But, 30 minutes before our presentation, we had a working prototype. For the presentation we represented a clinical protocol for resuscitating infants. Our presentation could only be three minutes long so everything had to be condensed. We won one of the 2nd place prizes at the competition.</p>
+				</div>
+				<div class="span7">
+					<img class="img-polaroid" src="trext-idea.jpg"/>
+				</div>
+			</div>
+			<br/>
+			<p>The software 2 days after the competition:</p>
+			<img src="earlyTrext.png" style="margin-left: -30px;"/>
+			<p>There was a palpable feeling that we were really good at this. We wanted to keep going. We thought the texting app was fantastic and we wanted to see it used on the ground in global health settings. But, everyone we showed it to had different ideas of use cases. Most of them were not in the field of global health. We realized we had build a useful design tool. </p>
+
+			<p>We thought about using the tool we'd created as a commercial product. But, before we could, we needed to rewrite the entire codebase. The hackathon code wasn't thought out very well and couldn't support new features. We wanted to use <a href="http://nodejs.org">Node.js</a> on the server side because of some of its <a href="http://loadimpact.com/blog/nodejs-vs-php-using-load-impact-to-viaualize-nodejs-efficency" target="_blank">advantages over PHP</a>. But, node is hard to use. We had a lot of interest in the software, and we didn't have time to learn an entirely new technology stack. So, we took on some <a href="http://en.wikipedia.org/wiki/Technical_debt" target="_blank">technical debt</a>. We did a rewrite with the same technology stack. Much of the rewrite happened over winter break while I was shopping the idea around to VCs, talking to lawyers, and pitching to San Francisco-based leeds.</p>
+
+			<p>The team worked intensely over January. We worked on a “batch texting” feature in which trees could be started by our clients not the end-users. We refactored the code three times. We designed a <a href="http://trext.me">marketing site</a>.</p>
 		</article>
 	</div>
 </body>
