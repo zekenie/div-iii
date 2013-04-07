@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-	<link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css"/>
+	<link rel="stylesheet" href="http://twitter.github.io/bootstrap/assets/css/bootstrap.css"/>
 	<style>
 		article{
 			margin-top:1.2em;
@@ -214,7 +214,39 @@
 
 			<p>We thought about using the tool we'd created as a commercial product. But, before we could, we needed to rewrite the entire codebase. The hackathon code wasn't thought out very well and couldn't support new features. We wanted to use <a href="http://nodejs.org">Node.js</a> on the server side because of some of its <a href="http://loadimpact.com/blog/nodejs-vs-php-using-load-impact-to-viaualize-nodejs-efficency" target="_blank">advantages over PHP</a>. But, node is hard to use. We had a lot of interest in the software, and we didn't have time to learn an entirely new technology stack. So, we took on some <a href="http://en.wikipedia.org/wiki/Technical_debt" target="_blank">technical debt</a>. We did a rewrite with the same technology stack. Much of the rewrite happened over winter break while I was shopping the idea around to VCs, talking to lawyers, and pitching to San Francisco-based leeds.</p>
 
-			<p>The team worked intensely over January. We worked on a “batch texting” feature in which trees could be started by our clients not the end-users. We refactored the code three times. We designed a <a href="http://trext.me">marketing site</a>.</p>
+			<p>The team worked intensely over January. We worked on a batch texting, or "Phonebook" feature in which trees could be started by our clients not the end-users. But, one client wanted to be able to reference information about the end-user in trees. They wanted to say something like, "Hey Zeke, we haven't heard from you in a while, how's the [insert x y or z] going?" We thought about creating certain fields that we could know about each user (name, email, etc), but realized that our different client bases wanted radically different things. Creating rigid fields wouldn't be consistent with what we'd already built: a design tool. We decided that any contact should be able to have n fields associated with this. We had been using the standard relational database: MySQL. We decided to employ a NoSQL environment without strict schemas.</p>
+
+			<p>But, we were slightly stuck. We didn't know how to graphically display very abstract, open ended data. The solution came when we realized how our users would actually import contact data: an excel file. Our users have existing lists of the people they want to text, we just need to give them a way to upload them and view that excel file online. Here's a snapshot of how the Phonebook works with the tree builder.</p>
+
+			<div class="row-fluid">
+				<div class="span6"><img src="phonebook2.png" class="img-polaroid"/></div>
+				<div class="span6"><img src="phonebook1.png" class="img-polaroid"/></div>
+			</div>
+<br/>
+			<p>In February, we refactored the code three times. The third refactor was separating the code that ran trees on phones with the code base that built trees. They are truly different programs and it made sense to run them in different environments so they could be scaled appropriately. (We also realize that the phonebook can and should be separated. That way we’ll be able to expose it as a commercial API someday.) We also rewrote the way conversations were stored. We realized that storing them in MySQL required a lot of processing every time a tree log was rendered. We started storing the logs in MongoDB and cut processing time significantly. In this time we also designed a <a href="http://trext.me">marketing site</a>.</p>
+
+			<p>Here is a screenshot of the trext builder today:</p>
+
+			<img src="trextToday.png"/>
+
+			<p>We are currently working on rewriting the trext SMS program in Node.js. The program that sends and receives SMSs is a perfect candidate for Node. Its IO intensive and would benefit from persistent connections to the database. Additionally, we may want use websockets in the future to give realtime feedback about tree performance.</p>
+
+			<p>The TrextNode project is fully functional, but less tested than the PHP version. After it has been tested and transitioned into use, we will rewrite the backend of the tree builder and webapp in Node for a consistent technology stack.</p>
+
+			<strong>Future of Trext</strong>
+			<p>Trext is going to be a company. We have three investors that are going to support us for a time, and we hope to get enough revenue to be sustainable soon.</p>
+
+<p>Trext also has a future in global health and service. But, it is going to take some very different development. I don't want to get into business models, mostly because I'm not a business person, but I know enough to say that the Trext service isn't affordable enough for global health organizations. We have fixed material costs somewhere between 1.5 and 2 cents per text message. Additionally, our text messages must come from the United States. This price and restriction makes no sense for a rural clinic in Haiti or Rwanda. However, I'm working on a solution to these problems.</p>
+
+<p><a href="http://en.wikipedia.org/wiki/Mobile_broadband_modem">USB GSM Modems</a> (that are <a href="http://www.traud.de/gsm/index.html">AT command</a> compatible) can send and receive text messages from computers. Node.js can send and receive data from USB ports. Theoretically, a computer could be configured as a trext server that does the texting internally. Technically, it wouldn't even need an internet connection, just cell service. If the computer were a laptop, reliable electricity wouldn't be necessary.</p>
+
+<p>To prototype the concept, I purchased a Samsung/Google Chromebook. I rigged it to run Ubuntu Linux form a standard SD camera card. I then configured the system with Git, Node.js, MySQL, and MongoDB. This process took a whole week, which was surprising. At every point in the configuration I faced new and unexpected problems. I had never compiled C source code for example. I had cryptic errors all the time. When I ran the 'make' command, I got "error (2)." Google was surprisingly unhelpful. Eventually I found that the problem had been in the system's locale settings. Throughout the process I got a lot better at manual system configuration, and learned that package managers are my friend. </p>
+
+<p>Once I had the baseline system configured to my liking, I learned how to make a disk image with the dd command. I can now replicate the system on to new camera cards for new Chromebooks. The system is scalable. Its total cost is about $350. It runs trext but could also work as a local web server for other services.</p>
+
+<p>I'm currently working on adapting Trext to run on the system. I haven't yet purchased the GSM modem or began that side of development, mostly due to cash flow problems. But I expect to be able to make the purchase next week. </p>
+
+<p>After graduation I have plans to take two prototypes to Haiti and meet my friend Jean. Jean works for <a href="http://www.oursoil.org/">OurSoil</a>. They want to test our system. They will use it for following up on trainings they run, sending out surveys, reminders, and educational information. If the test run goes well, we could easily replicate these systems and send them elsewhere.</p>
 		</article>
 	</div>
 </body>
