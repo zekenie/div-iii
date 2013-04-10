@@ -2,6 +2,8 @@
 <html>
 <head>
 	<link rel="stylesheet" href="http://twitter.github.io/bootstrap/assets/css/bootstrap.css"/>
+	<link rel="stylesheet" href="http://twitter.github.io/bootstrap/assets/js/google-code-prettify/prettify.css"/>
+	<script src="http://twitter.github.io/bootstrap/assets/js/google-code-prettify/prettify.js"></script>
 	<style>
 		article{
 			margin-top:1.2em;
@@ -36,6 +38,7 @@
 					<li><a href="#chemGP">ChemGP</a></li>
 					<li><a href="#carrotStick">CarrotStick</a></li>
 					<li><a href="#trext">Trext</a></li>
+					<li><a href="#modfinder">Modfinder</a></li>
 					<li><a href="#opinion">Opinion Essay</a></li>
 					<li><a href="#conclusions">Conclusions</a></li>
 				</ul>
@@ -249,6 +252,108 @@
 
 <p>After graduation I have plans to take two prototypes to Haiti and meet my friend Jean. Jean works for <a href="http://www.oursoil.org/">OurSoil</a>. They want to test our system. They will use it for following up on trainings they run, sending out surveys, reminders, and educational information. If the test run goes well, we could easily replicate these systems and send them elsewhere.</p>
 		</article>
+
+		<article id="modfinder">
+			<div class="page-header">
+				<h1><a href="http://modfinder.me/">Modfinder</a></h1>
+			</div>
+
+			<img src="modfinder1.png"/>
+			<img src="modfinder2.png"/>
+			<img src="modfinder3.png"/>
+
+			<div class="row-fluid">
+				<div class="span5"><img src="modfinder4.png" class="img-polaroid"/></div>
+				<div class="span7"><img src="modfinder5.png" class="img-polaroid"/></div>
+			</div>
+			<br/>
+			<p>In February I went to <a href="http://ecohacksf.org/" target="_blank">EcoHackSF</a> with Seth Toles and others. We built a cool toy, but nothing to showcase here. While we were there we talked a lot about web technologies. We both felt that we took shortcuts frequently while building websites. We wanted to "do it right" for once. We picked the most talked-about new web platform, Node.js. We decided to do a project in Node to learn it. After some brainstorming we decided to build a tool to help Hampshire students find mod-mates. We decided to model our service off the popular dating service <a href="http://okcupid.com" target="_blank">OK Cupid</a>. OK Cupid works by letting users ask questions to the entire community and answer others' questions. Users can answer the questions and also express the answer they accept in a partner. We outlined a plan to develop a similar platform. But, our platform would focus more on groups than on pairs. This is because group dynamics are much more complex than one to one relationships. You can think about an eight person mod as a complete graph with eight nodes and 28 edges. There are 28 separate relationships in that mod. We wanted to do all we could to give people a good indicator about what they disagreed on.</p>
+
+			<p>First, to see if there was interest, we put up a simple site explaining the idea. In 24 hours we had signups from 20% of the population that participates in the housing lottery. We considered this a success and build the service over spring break.</p>
+
+			<p>Since the site's beta launch over spring break, we've had ~175 users signup, ~5000 questions answered, ~200 questions asked, ~100 "favorites." We've made ~5000 match calculations. All of these numbers are growing daily and will continue to do so until the housing lottery.</p>
+
+			<p>We've discovered that running a node app takes a lot of hands on management. It frequently crashes and needs to be restarted. We've been able to do a lot of work with catching exceptions which has prevented the worst of it. We've also realized how immature the platform is. The PaaS that are built in node often have their own failures. We've had pretty bad uptime, though its gotten better recently. </p>
+
+			<p>I'm particularly proud of our matching algorithm which I will include here. I wrote the first pseudocode version, Seth rewrote it in proper Node.js. Then, I wrote the database integration.</p>
+
+<pre class="prettyprint linenums">var	_ = require('underscore')
+,	mysql = require('mysql')
+,	connection = mysql.createConnection({
+	host:'[omitted]',
+	port:[omitted],
+	user:'[omitted]',
+	password:'[omitted]',
+	database:'[omitted]',
+	multipleStatements:'true'
+});
+var numMatches = 0;
+connection.query("SELECT * FROM `user` WHERE `numResponses` > 5; SELECT * FROM `questionresponse`; SELECT * FROM `acceptableresponse`;",function(err,results){
+	//connection.destroy();
+	if(err){
+		console.log(err);
+		//connection.destroy();
+		return false;
+	}
+
+	process.on("exit",function() {
+		connection.destroy();
+	});
+
+	var users = results[0];
+	_.each(users,function(user){
+		user.responses = _.where(results[1], {userID:user.userID});
+		user.acceptable = _.where(results[2], {userID:user.userID});
+	});
+	_.each(users,function(i) {
+		var userMatches = 0;
+		console.log("-----------",i.name,"----------");
+		_.each(users,function(j) {
+			if(i.userID === j.userID)
+				return false;
+			var overlap = _.intersection(_.pluck(i.responses, "questionID"),_.pluck(j.responses, "questionID"));
+			
+			if(overlap.length > 6) {
+				var points = 0;
+				var possible = 0;
+				_.each(overlap,function(questionID) {
+					var importance = _.where(i.responses, {questionID:questionID})[0].importance;
+					possible += importance;
+					if(_.contains(
+						_.pluck(_.where(i.acceptable, {questionID:questionID}), "answerID"),
+						_.where(j.responses, {questionID:questionID})[0].answerID)) {
+						points += importance;
+					} else {
+						points -= importance;
+					}
+				});
+				if(possible !== 0){
+					userMatches++;
+					numMatches++;
+					connection.query(
+						"DELETE FROM `match` WHERE `userID` = ? AND `mUserID` = ? LIMIT 1; \
+						INSERT LOW_PRIORITY INTO `match` (`userID`,`mUserID`,`match`,`base`) VALUES (?,?,?,?);",
+						[
+							i.userID, j.userID,
+							i.userID,j.userID,(points + possible) / (possible * 2),overlap.length
+						],
+						console.log
+					);
+					var match =  parseInt(((points + possible) / (possible * 2)) * 100);
+					console.log("===>",i.name + " : " + j.name + " : " + match + "%, based on " + overlap.length);//possible: " + parseInt(possible) + "/" + overlap.length);
+				}
+			}
+		});
+		connection.query("UPDATE LOW_PRIORITY `user` SET `numMatches` = ? WHERE `userID` = ?",[userMatches,i.userID],console.log);
+		console.log(userMatches," total matches.");
+	});
+console.log(numMatches);
+
+});</pre>
+
+		</article>
 	</div>
+
+	<script>window.prettyPrint && prettyPrint()</script>
 </body>
 </html>
