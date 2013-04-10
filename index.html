@@ -277,7 +277,7 @@
 
 			<p>I'm particularly proud of our matching algorithm which I will include here. I wrote the first pseudocode version, Seth rewrote it in proper Node.js. Then, I wrote the database integration.</p>
 
-<pre class="prettyprint linenums">var	_ = require('underscore')
+<pre style="font-size:0.7em;" class="prettyprint linenums">var	_ = require('underscore')
 ,	mysql = require('mysql')
 ,	connection = mysql.createConnection({
 	host:'[omitted]',
@@ -311,7 +311,10 @@ connection.query("SELECT * FROM `user` WHERE `numResponses` > 5; SELECT * FROM `
 		_.each(users,function(j) {
 			if(i.userID === j.userID)
 				return false;
-			var overlap = _.intersection(_.pluck(i.responses, "questionID"),_.pluck(j.responses, "questionID"));
+			var overlap = _.intersection(
+							_.pluck(i.responses, "questionID"),
+							_.pluck(j.responses, "questionID")
+						);
 			
 			if(overlap.length > 6) {
 				var points = 0;
