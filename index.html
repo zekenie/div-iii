@@ -47,6 +47,39 @@
 	</div>
 	<br/><br/>
 	<div class="container">
+		<article>
+			<div class="page-header">
+				<h1>Introduction</h1>
+			</div>
+			<strong>Picking a Div III</strong>
+			<p>My Div III started twelve months ago. I was looking for a large-scale project to create or join. I was considering a lab-based biology research project. But, I felt that that sort of project wouldn't play to my strengths. I was attending a Biomath lecture series at Smith College. The purpose was to present the complex intersection of computational techniques and life sciences. It was also intended to encourage young people to work with computational and biological fields. At the time, I was TAing Organic Chemistry (it had been my third semester of chemistry in a row). I didn't want to be a chemist. I wanted to be a doctor, and I had to study chemistry to go to medical school. Nonetheless, chemistry was interesting, and it was becoming less intimidating than it had been the year before. </p>
+
+			<p>I heard a lecture on Genetic Programming by Lee Spector. The talk was fascinating. He described how one could create a computer system where programs evolved to solve problems. It had been my first formal introduction to GP. Durring the talk, I remebered a conversation I had had with my frind Omri Bernstien. He was telling me about how he thought there was probably an interesting project that would combine Genetic Programming and Organic Chemistry. In the QA of Lee's talk, I raised my hand, "Has anyone ever combined GP and organic chemistry."" He said that he hadn't heard of anyone doing that, but suggested that I meet with him and talk about it.</p>
+
+			<p>I considered doing a Div III in that subject area. GP and chemistry seemed to leverage my strength in computer programming in ways that an ambiguous biology project wouldn't.</p>
+
+			<p>I met with Lee a few times, once with a Smith chemist, David Gorin. Lee described GP to Dave. Dave thought of a project that might work. I was seriously considering doing the project.</p>
+
+			<p>Then, the biomath lecturer coordinator announced that students could apply for an NSF Biomathmatics fellowship. I decided to apply with this project. If I was accepted, I would make this my Div III. I was, and I did... at least at first.</p><br/>
+
+			<strong>The Summer</strong>
+			<p>Before the NSF Biomath fellowship, I had arranged an internship at the Center for Resuscitation Science at Beth Israel Deaconess Medical Center in Boston. Now that I had the fellowship, I would have to juggle both. But, I didn't yet know what my responsibilities at BIDMC were. Lee and the fellowship coordinator agreed that it would be OK if I were to travel to the 5 college area weekly for meetings. Luckily for me, the job at BIDMC was pretty rote. I had to do a lot of manual data entry. I had no ongoing projects. They were fine with me working 3 days per week. I worked Monday, Tuesday and Wednesday. On thursday I would take the bus to Hampshire and attend a meeting with Lee and his research students. I stayed on a friend's couch and bussed back the next day.</p>
+
+			<p>With Lee's group, my first task was to build the data infrastructure that would allow for the chemistry GP project. I was dealing with data from all sorts of different sources, building a database that would be easily accessed by GP. This project is described in the ChemGP section. At the same time, I was doing very repetitive work copying data from one computer system to another in the hospital. I realized that I had the technical tools to improve the BIDMC computer systems used for research. But, no one at BIDMC was wiling to entertain the idea. In August, I wrote an essay about my experiences and frustrations with clinical research. After many iterations, this piece will be published in The Scientist in May.</p><br/>
+
+			<strong>The fall</strong>
+			<p>In the fall, I was working on my Div III while doing three advanced learning activities. I was teaching Intro to Web Development, TAing Organic Chemistry II, and TAing Genetic Programming. The largest commitment by far was teaching Web Development. I planned the classes, reviewed student work, and met with students. TAing Orgo was less work, but still took time. I had weekly TA sessions, went to class, reviewed material, and met with struggling students for extra help. TAing Genetic Programming was my smallest commitment. I went to class and occasionally met with students who needed help.</p>
+
+			<p>By the end of October I had made some progress on my Div III project. I had built WebGP (described below) and interfaced ChemGP with it to do runs. It was around this time that I went to a Hackathon hosted by Communicate Health at UMass. My team produced CarrotStick (described below). We won the Hackathon. That project started to change my priorities. Building software that related to people was very exciting.</p>
+
+			<p>A few weeks later, the team went to another Hackathon. This won was hosted by Mass General Hospital and MIT's Hacking Medicine group. The subject was Global Health. We built Trext (described below) and received a second place prize. Trext became the largest part of my Div III.  I worked on Trext full time (+ 50%) for several months.</p>
+
+			<p>As the technical demands of Trext plateaued (while I waited for the business aspects caught up), I started working on Modfinder, a tool to help Hampshire students find housemates. The impetus behind the project was primarily to learn a new technology stack. The project is described below.</p>
+
+			<p>Throughout my Div III, I collaborated with different individuals. On ChemGP, I worked with Omri Bernstein, especially in the beginning. The opinion essay I wrote was co-authored with Dr. Martina Steurer, MD, although I did the primary writing. On CarrotStick, I collaborated a lot with Kira McCoy, and somewhat with James Matheson and Amit Ringel. I worked on Modfiner with Seth Toles.</p>
+
+			<p>My preferred technology stack for webapps has changed significantly over the course of the year, mostly on the server-side. I started the year working primarily with PHP/MySQL. Now I prefer Node.js, MySQL, and MongoDB.</p>
+		</article>
 		<article id="webGP">
 			<div class="page-header">
 				<h1>webGP</h1>
@@ -227,7 +260,7 @@
 				<div class="span6"><img src="phonebook1.png" class="img-polaroid"/></div>
 			</div>
 <br/>
-			<p>In February, we refactored the code three times. The third refactor was separating the code that ran trees on phones with the code base that built trees. They are truly different programs and it made sense to run them in different environments so they could be scaled appropriately. (We also realize that the phonebook can and should be separated. That way we’ll be able to expose it as a commercial API someday.) We also rewrote the way conversations were stored. We realized that storing them in MySQL required a lot of processing every time a tree log was rendered. We started storing the logs in MongoDB and cut processing time significantly. In this time we also designed a <a href="http://trext.me">marketing site</a>.</p>
+			<p>In February, we refactored the code three times. The third refactor was separating the code that ran trees on phones with the code base that built trees. They are truly different programs and it made sense to run them in different environments so they could be scaled appropriately. (We also realize that the phonebook can and should be separated. That way we'll be able to expose it as a commercial API someday.) We also rewrote the way conversations were stored. We realized that storing them in MySQL required a lot of processing every time a tree log was rendered. We started storing the logs in MongoDB and cut processing time significantly. In this time we also designed a <a href="http://trext.me">marketing site</a>.</p>
 
 			<p>Here is a screenshot of the trext builder today:</p>
 
