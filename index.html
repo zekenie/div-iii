@@ -43,7 +43,8 @@
 					<li><a href="#trext">Trext</a></li>
 					<li><a href="#modfinder">Modfinder</a></li>
 					<li><a href="#opinion">Opinion Essay</a></li>
-					<li><a href="#closing">Conclusions</a></li>
+					<li><a href="#advocacy">Advocacy</a></li>
+					<li><a href="#conclusion">Conclusion</a></li>
 				</ul>
 			</div>
 		</div>
@@ -75,7 +76,7 @@
 
 			<p>By the end of October I had made some progress on my Div III project. I had built WebGP (described below) and interfaced ChemGP with it to do runs. It was around this time that I went to a Hackathon hosted by Communicate Health at UMass. My team produced CarrotStick (described below). We won the Hackathon. That project started to change my priorities. Building software that related to people was very exciting.</p>
 
-			<p>A few weeks later, the team went to another Hackathon. This won was hosted by Mass General Hospital and MIT's Hacking Medicine group. The subject was Global Health. We built Trext (described below) and received a second place prize. Trext became the largest part of my Div III.  I worked on Trext full time (+ 50%) for several months.</p>
+			<p>A few weeks later, the team went to another Hackathon. This one was hosted by Mass General Hospital and MIT's Hacking Medicine group. The subject was Global Health. We built Trext (described below) and received a second place prize. Trext became the largest part of my Div III.  I worked on Trext full time (+ 50%) for several months.</p>
 
 			<p>As the technical demands of Trext plateaued (while I waited for the business aspects caught up), I started working on Modfinder, a tool to help Hampshire students find housemates. The impetus behind the project was primarily to learn a new technology stack. The project is described below.</p>
 
@@ -96,7 +97,7 @@
 				<h2>What is GP</h2>
 				<p>Genetic programming is a technique that allows computers to write programs. The genetic programmer must first write a function that can evaluate program-candidates. This is called the fitness function. This function evaluates a candidate program and returns some form of score. The genetic programmer must also build a random code generator that can produce random programs. With these two components, one can build the first steps of a GP system by generating many random programs and evaluating them with the fitness function. Typically, none of the random programs come close to a good score, but some are better than others. Thus far, this is mildly interesting, but not powerful. In order to leverage principals of Darwinian evolution, programs must be able to "reproduce."</p>
 
-				<p>A simple genetic programming system is completed when programs can mutate and/or breed with one another. A mutate function takes a program and returns a modified version of itself. A crossover function takes two programs, removes a piece of one and replaces it with a piece of the other. To run the finished GP system, generate a series of random programs. Rate their fitness'. Pick some of the better programs and breed them to produce a new series. Each series is called a generation. If the system is working properly, the programs' fitness should improve over time.</p>
+				<p>A simple genetic programming system is completed when programs can mutate and/or breed with one another. A mutate function takes a program and returns a modified version of that program. A crossover function takes two programs, removes a piece of one and replaces it with a piece of the other. To run the finished GP system, generate a series of random programs. Rate their fitnesses. Pick some of the better programs and breed them to produce a new series. Each series is called a generation. If the system is working properly, the programs' fitness should improve over time.</p>
 
 				<p>Genetic programming is a deep and rich field. There are countless papers published on variations of each of the concepts explained above. </p>
 			</section>
@@ -176,13 +177,13 @@
 
 <p>In this project I used symbolic regression GP to search for a mathematical relationship between known properties of BC cycloadditions and their reaction rate constants (k). In order to start with GP, I had to build a significant amount of cheminformatic infrastructure. Essentailly, I needed a database of reactions. I needed many parameters about each molecule in the reaction--two reactants, a solvent, and a product. I also needed information about the reaction (its pressure, temperature, reaction rate).</p>
 
-<p>I build the database with PHP/MySQL and javascript. I employed the <a target="_blank" href="http://web.chemdoodle.com">Chemdoodle web framework</a>, an HTML 5/javascript chemistry toolkit. They have an API service which was purchased for chemical computations. Using chemdoodle, I manually drew dozens of reactions from two papers and entered the reaction parameters. Chemdoodle's API calculated parameters for each molecule and I wrote code to save these calculations into MySQL.</p>
+<p>I built the database with PHP/MySQL and javascript. I employed the <a target="_blank" href="http://web.chemdoodle.com">Chemdoodle web framework</a>, an HTML 5/javascript chemistry toolkit. They have an API service which was purchased for chemical computations. Using chemdoodle, I manually drew dozens of reactions from two papers and entered the reaction parameters. Chemdoodle's API calculated parameters for each molecule and I wrote code to save these calculations into MySQL.</p>
 
 <p>In order to get the data in a format that allowed webGP to be used, I needed to write code to translate the multidimensional MySQL data into a linear list. Each reaction consisted of four molecule rows, one reaction row, and several rows to indicate the relationship. Each row had up to 16 fields. I had to translate this information into a simple list. To do this I prefixed all molecule data with the role it was playing in the reaction (diene-molecular weight, dieneophile molecular weight, solvent molecular weight, etc). From this I was able to create a simple table representing all the data. From this I used webGP to generate functions that took every reaction variable and generate the reaction rate constant.</p>
 
 <p>I found that the webGP engine that had worked well for simple problems was not effective with this problem. The programs evolved, but plateaued early in the run (they did not continue to improve). In order to improve the GP performance I patched webGP to include "<a href="http://faculty.hampshire.edu/lspector/pubs/trivial-geography-toappear.pdf" target="_blank">trivial geography</a>" in the mating functions. This technique selects the most fit programs from each area in the population, not the population at large. This allows for slightly less fit programs to survive longer and preserves diversity in the population. </p>
 
-<p>The implementation of trivial geography made the runs' plateaus come later, and their fitness' improve.</p>
+<p>The implementation of trivial geography made the runs' plateaus come later, and their fitnesses improve.</p>
 
 <p>I also needed to modify the code to include separate data categories for training and validation of the programs. Certain reactions were randomly selected to train (be used in the fitness evaluation) while others were left to evaluate the fitness of best programs from the run. Because these data were not used in the training, their incorporation reduces the degree to which the evolved programs are biased towards the dataset. </p>
 
@@ -198,7 +199,7 @@
 
 			<p>Carrot Stick is a piece of web software written at a hackathon hosted by <a href="http://communicatehealth.com" target="_blank">Communicate Health</a> last fall. We were tasked with writing software that helped communicate public health messages. A team of four (myself, James Matheson, Kira McCoy, and Amit Ringel) worked for two days to produce Carrot Stick.</p>
 
-			<p>The abstract from Kira McCoy's Div III</p>
+			<p>The abstract from Kira McCoy's Div III:</p>
 			<blockquote>
 				<p>Smoking is the leading cause of preventable death in the US (Danaei, Ding et al. 2009), and accounts for 1 in 10 deaths worldwide (Park, Tudiver et al. 2012). Information is not enough to change behavior. Many smoking cessation interventions have harnessed the power of social relationships, however none have provided direct messages in loved ones' voices. The literature shows that "The person-to-person spread of smoking cessation appears to have been a factor in the population level decline in smoking seen in recent decades" (Christakis and Fowler 2008). People are connected, as is their health. Social relationships and expanded agency can be used to help people achieve health goals like smoking cessation. Services such as counseling may have short term impacts on smoking habits, but concern from a loved one may have lasting effects.</p>
 					<br/>
@@ -284,7 +285,7 @@
 
 <p>Once I had the baseline system configured to my liking, I learned how to make a disk image with the dd command. I can now replicate the system on to new camera cards for new Chromebooks. The system is scalable. Its total cost is about $350. It runs trext but could also work as a local web server for other services.</p>
 
-<p>I'm currently working on adapting Trext to run on the system. I haven't yet purchased the GSM modem or began that side of development, mostly due to cash flow problems. But I expect to be able to make the purchase next week. </p>
+<p>I'm currently working on adapting Trext to run on the system. I haven't yet purchased the GSM modem or begun that side of development, mostly due to cash flow problems. But I expect to be able to make the purchase next week. </p>
 
 <p>After graduation I have plans to take two prototypes to Haiti and meet my friend Jean. Jean works for <a href="http://www.oursoil.org/">OurSoil</a>. They want to test our system. They will use it for following up on trainings they run, sending out surveys, reminders, and educational information. If the test run goes well, we could easily replicate these systems and send them elsewhere.</p>
 		</article>
@@ -397,10 +398,10 @@ console.log(numMatches);
 			<p>The article will be included here after it is published on May 1st. I can provide manuscripts upon request.</p>
 		</article>
 
-		<article id="closing">
-			<div class="page-header"><h1>In Closing...</h1></div>
+		<article id="advocacy">
+			<div class="page-header"><h1>An Example of Advocacy</h1></div>
 
-			<p>I'd like to close by including a conversation I've been having with my high school biology teacher, Ben.</p>
+			<p>I've decided to include an email conversation I've had with my high school Biology teacher.</p>
 
 			<strong>Zeke:</strong>
 			<blockquote>
@@ -418,9 +419,9 @@ console.log(numMatches);
 
 				<p>Solution to both:  Let's think about a company. This company would make most of its money by doing web development contracts. We would bid 30% lower than the market, insuring more reliable employment. We might even be in the position to pick and choose our clients. This part of the company would produce significant revenue because we'd take on more projects than we could reasonably handle (hang on, I'll explain how this could ever work in a second).</p>
 
-				<p>The company would also interact with kids in middle school and high school. We’d do development tutoring in very small groups charing hourly. This aspect of the business wouldn’t be a cash cow either, but it would pay for itself. Kids who found they liked coding could go to an intensive development bootcamp over the summer. After the bootcamp, they would be eligible for apprenticeships. Apprentices would be payed $10 / hour, and work a lot. These kids would also be the ones that loved it enough to go to the bootcamp. By this time, they'd actually be pretty good. They’d be working independently. Their mentors would review their work and help them get better, but they'd actually be doing stuff. This is how the business model would work. These kids would be worth sooooo much more than $10 / hour. They’d be doing client work that would get reviewed by the staff developers.</p>
+				<p>The company would also interact with kids in middle school and high school. We'd do development tutoring in very small groups charing hourly. This aspect of the business wouldn't be a cash cow either, but it would pay for itself. Kids who found they liked coding could go to an intensive development bootcamp over the summer. After the bootcamp, they would be eligible for apprenticeships. Apprentices would be payed $10 / hour, and work a lot. These kids would also be the ones that loved it enough to go to the bootcamp. By this time, they'd actually be pretty good. They'd be working independently. Their mentors would review their work and help them get better, but they'd actually be doing stuff. This is how the business model would work. These kids would be worth sooooo much more than $10 / hour. They'd be doing client work that would get reviewed by the staff developers.</p>
 
-				<p>This concept isn't that crazy. Its not unlike how doctors and lawyers are trained. The only thing that’s different is the age group. I think this has the potential to shake up two industries at once: software and education.</p>
+				<p>This concept isn't that crazy. Its not unlike how doctors and lawyers are trained. The only thing that's different is the age group. I think this has the potential to shake up two industries at once: software and education.</p>
 
 				<p>Right now this is just a thought exercise for me. I'd like to do it some day, but I'm in no rush. I'd love to hear your thoughts.</p>
 			</blockquote>
@@ -468,6 +469,19 @@ console.log(numMatches);
 
 				<p>Also check out this info graphic that cites the Bereau of labor statistics, the College Board, and the Association for Computing Machinery. http://www.code.org/stats</p>
 			</blockquote>
+		</article>
+		<article id="conclusion">
+			<p>I predict that when we look back we will see the early 21st century as an unusual time. Computers have become commonplace. Most aspects of our lives have been transformed by their presence. Yet, most people don't have the ability to harness their true power.</p>
+
+<p>Often organizations conclude that they can't build their own computer systems. They hear about tech companies hiring hundreds of programmers and paying them well. But organizations can't ignore computers either, if they want to interact with the world. Organizations feel forced to use "canned goods"--computer tools that are supposed to "work" out of the box. I put "work" in quotes because they don't really. They serve the lowest common denominator and take away many of the intrinsic benefits of computing. They don't share data well. They don't promote structured thinking (or data). One example of this is covered in detail in my opinion piece. I don't feel the need to add more detail here.</p>
+
+<p>My Div III shows that there's another way. I worked with (mostly) non-techies to build "empowerment software." I showed that its possible to build web services that make a huge difference quickly and (relatively) cheaply.</p>
+
+<p>Much of the work done at tech companies is handling problems of scale. If facebook was built to serve 1000 people, it would require a fraction of the development power, even with the same feature set. The problems these organizations face typically don't need to be brought to millions. They can hire just one developer. If they did, a whole slew of new possibilities would be open to them--improving efficiency and quality of work.</p>
+
+<p>In fact, empowerment software is getting easier and easier. More and more services are open to small developers. Twilio is a great example of this. It lets someone with basic programming ability write webapps that can make and receive phone calls and text messages.</p>
+
+<p>But, more work is needed. There aren't enough programmers. This makes even hiring one too expensive for many. If you ask me, something this important to society should be taught in every high school. At least basic competency should be a requirement. Changes like this would empower countless people and organizations to live better.</p>
 		</article>
 	</div>
 
