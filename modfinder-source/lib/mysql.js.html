@@ -1,0 +1,68 @@
+<!DOCTYPE html><html><head><title>mysql.js</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../index.html" class="source"><span class="file_name">README</span></a><a href="../lib/dbConfig.js.html" class="source "><span class="base_path">lib / </span><span class="file_name">dbConfig.js</span></a><a href="../lib/mysql.js.html" class="source selected"><span class="base_path">lib / </span><span class="file_name">mysql.js</span></a><a href="../lib/mysqlConf.js.html" class="source "><span class="base_path">lib / </span><span class="file_name">mysqlConf.js</span></a><a href="../lib/requestValidator.js.html" class="source "><span class="base_path">lib / </span><span class="file_name">requestValidator.js</span></a><a href="../lib/sqlHelper.js.html" class="source "><span class="base_path">lib / </span><span class="file_name">sqlHelper.js</span></a><a href="../routes/favorite.js.html" class="source "><span class="base_path">routes / </span><span class="file_name">favorite.js</span></a><a href="../routes/feedback.js.html" class="source "><span class="base_path">routes / </span><span class="file_name">feedback.js</span></a><a href="../routes/match.js.html" class="source "><span class="base_path">routes / </span><span class="file_name">match.js</span></a><a href="../routes/question.js.html" class="source "><span class="base_path">routes / </span><span class="file_name">question.js</span></a><a href="../routes/questionresponse.js.html" class="source "><span class="base_path">routes / </span><span class="file_name">questionresponse.js</span></a><a href="../routes/user.js.html" class="source "><span class="base_path">routes / </span><span class="file_name">user.js</span></a><a href="../server.js.html" class="source "><span class="base_path">. / </span><span class="file_name">server.js</span></a><a href="../test/user.js.html" class="source "><span class="base_path">test / </span><span class="file_name">user.js</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>mysql.js</h1><div class="filepath">lib/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div>
+</td><td class="code"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">mysql</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;mysql&quot;</span><span class="p">)</span>
+<span class="p">,</span> <span class="nx">pool</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;generic-pool&quot;</span><span class="p">)</span>
+<span class="p">,</span> <span class="nx">mysqlConf</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;./dbConfig&quot;</span><span class="p">).</span><span class="nx">mysql</span><span class="p">;</span>
+
+<span class="kd">function</span> <span class="nx">replaceClientOnDisconnect</span><span class="p">(</span><span class="nx">client</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">client</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">err</span><span class="p">.</span><span class="nx">fatal</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;trying to recycle an old connection&quot;</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">code</span> <span class="o">!==</span> <span class="s2">&quot;PROTOCOL_CONNECTION_LOST&quot;</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
+    <span class="p">}</span></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>client.config is actually a ConnectionConfig instance, not the original
+configuration. For most situations this is fine, but if you are doing something
+more advanced with your connection configuration, then you should check
+carefully as to whether this is actually going to do what you think it should do.</p>
+</td><td class="code"><div class="highlight"><pre>      <span class="nx">client</span> <span class="o">=</span> <span class="nx">mysql</span><span class="p">.</span><span class="nx">createConnection</span><span class="p">(</span><span class="nx">client</span><span class="p">.</span><span class="nx">config</span><span class="p">);</span>
+      <span class="nx">replaceClientOnDisconnect</span><span class="p">(</span><span class="nx">client</span><span class="p">);</span>
+      <span class="nx">connection</span><span class="p">.</span><span class="nx">connect</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><p>Well, we tried. The database has probably fallen over.
+That's fairly fatal for most applications, so we might as
+call it a day and go home.</p>
+</td><td class="code"><div class="highlight"><pre>            <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+          <span class="p">}</span>
+      <span class="p">});</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+<span class="nx">mysqlConf</span><span class="p">.</span><span class="nx">createConnection</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">conn</span> <span class="o">=</span> <span class="nx">mysql</span><span class="p">.</span><span class="nx">createConnection</span><span class="p">(</span><span class="nx">mysqlConf</span><span class="p">);</span>
+  <span class="nx">replaceClientOnDisconnect</span><span class="p">(</span><span class="nx">conn</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nx">conn</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">clientPool</span> <span class="o">=</span> <span class="nx">mysql</span><span class="p">.</span><span class="nx">createPool</span><span class="p">(</span><span class="nx">mysqlConf</span><span class="p">);</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">clientPool</span><span class="p">.</span><span class="nx">acquire</span> <span class="o">=</span> <span class="nx">exports</span><span class="p">.</span><span class="nx">clientPool</span><span class="p">.</span><span class="nx">getConnection</span><span class="p">;</span></pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><p>exports.clientPool = pool.Pool({
+    name: "MySQL",
+    create: function (callback) {
+        var client = mysql.createConnection(mysqlConf);
+        client.connect(function (error) {
+            if (!error) {
+                replaceClientOnDisconnect(client);
+            }
+            callback(error, client);
+        });
+    },
+    destroy: function(client) {
+        client.end();
+    },
+    // Maximum number of concurrent clients.
+    max: 11,
+    // Minimum number of connections ready in the pool.
+    // If set, then make sure to drain() on process shutdown.
+    min: 1,
+    // How long a resource can stay idle before being removed.
+    idleTimeoutMillis: 25000,
+    // Use console.log if true, but it can also be function (message, level).
+    log : false
+});</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-5"><td class="docs"><div class="pilwrap"><a href="#section-5" class="pilcrow">&#182;</a></div><p>If a minimum number of clients is set, then process.exit() can hang
+unless the following listener is set.
+process.on("exit", function() {
+    exports.clientPool.drain(function () {
+        exports.clientPool.destroyAllNow();
+    });
+});</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr></tbody></table><div id="generated">generated Tue Apr 30 2013 17:31:02 GMT-0400 (EDT)  </div><div id="projectname"><a href="../index.html">Modfinder</a></div></div></body></html>

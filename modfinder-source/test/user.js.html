@@ -1,0 +1,163 @@
+<!DOCTYPE html><html><head><title>user.js</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../index.html" class="source"><span class="file_name">README</span></a><a href="../lib/dbConfig.js.html" class="source "><span class="base_path">lib / </span><span class="file_name">dbConfig.js</span></a><a href="../lib/mysql.js.html" class="source "><span class="base_path">lib / </span><span class="file_name">mysql.js</span></a><a href="../lib/mysqlConf.js.html" class="source "><span class="base_path">lib / </span><span class="file_name">mysqlConf.js</span></a><a href="../lib/requestValidator.js.html" class="source "><span class="base_path">lib / </span><span class="file_name">requestValidator.js</span></a><a href="../lib/sqlHelper.js.html" class="source "><span class="base_path">lib / </span><span class="file_name">sqlHelper.js</span></a><a href="../routes/favorite.js.html" class="source "><span class="base_path">routes / </span><span class="file_name">favorite.js</span></a><a href="../routes/feedback.js.html" class="source "><span class="base_path">routes / </span><span class="file_name">feedback.js</span></a><a href="../routes/match.js.html" class="source "><span class="base_path">routes / </span><span class="file_name">match.js</span></a><a href="../routes/question.js.html" class="source "><span class="base_path">routes / </span><span class="file_name">question.js</span></a><a href="../routes/questionresponse.js.html" class="source "><span class="base_path">routes / </span><span class="file_name">questionresponse.js</span></a><a href="../routes/user.js.html" class="source "><span class="base_path">routes / </span><span class="file_name">user.js</span></a><a href="../server.js.html" class="source "><span class="base_path">. / </span><span class="file_name">server.js</span></a><a href="../test/user.js.html" class="source selected"><span class="base_path">test / </span><span class="file_name">user.js</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>user.js</h1><div class="filepath">test/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div>
+</td><td class="code"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;supertest&#39;</span><span class="p">)</span>
+<span class="p">,</span> <span class="nx">assert</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;assert&quot;</span><span class="p">)</span>
+<span class="p">,</span> <span class="nx">mysql</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;mysql&quot;</span><span class="p">)</span>
+<span class="p">,</span> <span class="nx">clientPool</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;../lib/mysql&quot;</span><span class="p">).</span><span class="nx">clientPool</span>
+<span class="p">,</span> <span class="nx">should</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;should&quot;</span><span class="p">)</span>
+<span class="p">,</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">request</span><span class="p">(</span><span class="s1">&#39;http://localhost:3000&#39;</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">Cookies</span> <span class="p">;</span>
+<span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>before(function(done) {
+    clientPool.acquire(function(err,mysql) {
+        mysql.query("DELETE FROM <code>user</code> WHERE <code>email</code> = 'zan09@hampshire.edu' LIMIT 1 ;",function(err,result) {
+            clientPool.releaseConnection(mysql);
+            done();
+        });
+    });
+});</p>
+</td><td class="code"><div class="highlight"><pre>  <span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;signup&quot;</span><span class="p">,</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;should only accept hampshire emails&quot;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">request</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">&quot;/user/new&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">send</span><span class="p">({</span>
+        <span class="nx">name</span><span class="o">:</span><span class="s2">&quot;bob&quot;</span><span class="p">,</span>
+        <span class="nx">pronoun</span><span class="o">:</span><span class="s2">&quot;asdf&quot;</span><span class="p">,</span>
+        <span class="nx">email</span><span class="o">:</span><span class="s2">&quot;bob@gmail.com&quot;</span><span class="p">,</span>
+        <span class="nx">points</span><span class="o">:</span><span class="mi">500</span><span class="p">,</span>
+        <span class="nx">div</span><span class="o">:</span><span class="mi">4</span><span class="p">,</span>
+        <span class="nx">age</span><span class="o">:</span><span class="mi">33</span><span class="p">,</span>
+        <span class="nx">subFree</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span>
+        <span class="nx">password</span><span class="o">:</span><span class="s2">&quot;foo&quot;</span>
+      <span class="p">})</span>
+      <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span><span class="nx">done</span><span class="p">);</span>
+    <span class="p">});</span>
+    <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;should have the correct fields&quot;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">request</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/user/new&#39;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">send</span><span class="p">({</span><span class="nx">foo</span><span class="o">:</span><span class="s2">&quot;bar&quot;</span><span class="p">})</span>
+      <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span><span class="nx">done</span><span class="p">);</span>
+    <span class="p">});</span>
+    <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;should create a new user with a good request&quot;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">request</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">&quot;/user/new&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">send</span><span class="p">({</span>
+        <span class="nx">name</span><span class="o">:</span><span class="s2">&quot;bob&quot;</span><span class="p">,</span>
+        <span class="nx">pronoun</span><span class="o">:</span><span class="s2">&quot;asdf&quot;</span><span class="p">,</span>
+        <span class="nx">email</span><span class="o">:</span><span class="s2">&quot;zan09@hampshire.edu&quot;</span><span class="p">,</span>
+        <span class="nx">points</span><span class="o">:</span><span class="mi">500</span><span class="p">,</span>
+        <span class="nx">div</span><span class="o">:</span><span class="mi">4</span><span class="p">,</span>
+        <span class="nx">age</span><span class="o">:</span><span class="mi">33</span><span class="p">,</span>
+        <span class="nx">subFree</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span>
+        <span class="nx">password</span><span class="o">:</span><span class="s2">&quot;foo&quot;</span>
+      <span class="p">})</span>
+      <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">302</span><span class="p">,</span><span class="nx">done</span><span class="p">);</span>
+    <span class="p">});</span></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><p>it("should have the new user in the database",function() {
+    clientPool.acquire(function(err,mysql) {</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><pre><code>    mysql.query("SELECT * FROM `user` WHERE `email` = 'zan09@hampshire.edu' LIMIT 1 ;",function(err,result) {
+        if(err){
+            return false;
+        }
+        clientPool.releaseConnection(mysql);
+        result.length.should.equal(1);
+    });
+});
+</code></pre>
+
+<p>});</p>
+</td><td class="code"><div class="highlight"><pre>  <span class="p">});</span>
+
+  <span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;login&quot;</span><span class="p">,</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;should return error without username or password&quot;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">request</span>
+        <span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">&quot;/login&quot;</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">send</span><span class="p">({</span><span class="nx">foo</span><span class="o">:</span><span class="s2">&quot;bar&quot;</span><span class="p">})</span>
+        <span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s2">&quot;Accept&quot;</span><span class="p">,</span><span class="s2">&quot;application/json&quot;</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span><span class="nx">done</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;should recognize a bad user&quot;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">request</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">&quot;/login&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">send</span><span class="p">({</span><span class="nx">email</span><span class="o">:</span><span class="s2">&quot;asdf&quot;</span><span class="p">,</span><span class="nx">password</span><span class="o">:</span><span class="s2">&quot;dfdfdf&quot;</span><span class="p">})</span>
+      <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">401</span><span class="p">,</span><span class="nx">done</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;should recognize a real user with a bad pass&quot;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">request</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">&quot;/login&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">send</span><span class="p">({</span><span class="nx">email</span><span class="o">:</span><span class="s1">&#39;zan09@hampshire.edu&#39;</span><span class="p">,</span><span class="nx">password</span><span class="o">:</span><span class="s2">&quot;blob&quot;</span><span class="p">})</span>
+      <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">401</span><span class="p">,</span><span class="nx">done</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;should recognize a real user with good password&quot;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">request</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">&quot;/login&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">send</span><span class="p">({</span><span class="nx">email</span><span class="o">:</span><span class="s1">&#39;zan09@hampshire.edu&#39;</span><span class="p">,</span><span class="nx">password</span><span class="o">:</span><span class="s2">&quot;foo&quot;</span><span class="p">})</span>
+      <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">301</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">Cookies</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">headers</span><span class="p">[</span><span class="s1">&#39;set-cookie&#39;</span><span class="p">].</span><span class="nx">pop</span><span class="p">().</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="nx">done</span><span class="p">();</span>
+      <span class="p">});</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+
+  <span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;view&quot;</span><span class="p">,</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;should still have the cookie and render /me&quot;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">request</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;/user/me&quot;</span><span class="p">);</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">cookies</span> <span class="o">=</span> <span class="nx">Cookies</span><span class="p">;</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;Accept&#39;</span><span class="p">,</span> <span class="s1">&#39;test/html&#39;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="nx">done</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;should have a 404 for a bad id&quot;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">request</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;/user/fuckyou&quot;</span><span class="p">);</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">cookies</span> <span class="o">=</span> <span class="nx">Cookies</span><span class="p">;</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;Accept&#39;</span><span class="p">,</span> <span class="s1">&#39;test/html&#39;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span><span class="nx">done</span><span class="p">);</span>
+    <span class="p">});</span>
+
+
+  <span class="p">});</span>
+
+  <span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;search&quot;</span><span class="p">,</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;should be able to make a search&quot;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">request</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;/user/search/yas&quot;</span><span class="p">);</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">cookies</span> <span class="o">=</span> <span class="nx">Cookies</span><span class="p">;</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s2">&quot;Accept&quot;</span><span class="p">,</span><span class="s2">&quot;text/json&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="nx">done</span><span class="p">);</span>
+    <span class="p">});</span>
+    <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;should ignore searches with no query&quot;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">request</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;/user/search/&quot;</span><span class="p">);</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">cookies</span> <span class="o">=</span> <span class="nx">Cookies</span><span class="p">;</span>
+
+      <span class="nx">req</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span><span class="nx">done</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+
+  <span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;uploadPic&quot;</span><span class="p">,</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;should get a 400 if pic is not provided&quot;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">request</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">&quot;/user/uploadPic&quot;</span><span class="p">);</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">cookies</span> <span class="o">=</span> <span class="nx">Cookies</span><span class="p">;</span>
+
+      <span class="nx">req</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span><span class="nx">foo</span><span class="o">:</span><span class="s2">&quot;abr&quot;</span><span class="p">}).</span><span class="nx">expect</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span><span class="nx">done</span><span class="p">);</span>
+    <span class="p">});</span>
+    <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;should return 200 if you provide a pic&quot;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="nx">request</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">&quot;/user/uploadPic&quot;</span><span class="p">);</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">cookies</span> <span class="o">=</span> <span class="nx">Cookies</span><span class="p">;</span>
+
+      <span class="nx">req</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span><span class="nx">pic</span><span class="o">:</span><span class="s2">&quot;abr&quot;</span><span class="p">}).</span><span class="nx">expect</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="nx">done</span><span class="p">);</span>
+    <span class="p">});</span>
+  <span class="p">});</span></pre></div></td></tr><tr id="section-5"><td class="docs"><div class="pilwrap"><a href="#section-5" class="pilcrow">&#182;</a></div><p>still need
+edit
+update
+index
+logout</p>
+</td><td class="code"><div class="highlight"><pre><span class="p">});</span>
+
+<span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;questionResponse&quot;</span><span class="p">,</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;create&quot;</span><span class="p">,</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;should reject bad requests&quot;</span><span class="p">);</span>
+    <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;should give 200 with the proper fields&quot;</span><span class="p">);</span>
+  <span class="p">});</span>
+  <span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;delete&quot;</span><span class="p">,</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;should reject if there&#39;s no questionResponseID, 400&quot;</span><span class="p">);</span>
+    <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;should return 200 with proper field&quot;</span><span class="p">);</span>
+    <span class="nx">it</span><span class="p">(</span><span class="s2">&quot;should return 404 not found if there are no record matching the ID for the user&quot;</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+
+</pre></div></td></tr></tbody></table><div id="generated">generated Tue Apr 30 2013 17:31:04 GMT-0400 (EDT)  </div><div id="projectname"><a href="../index.html">Modfinder</a></div></div></body></html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html><html><head><title>requestValidator.js</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../index.html" class="source"><span class="file_name">README</span></a><a href="../lib/dbConfig.js.html" class="source "><span class="base_path">lib / </span><span class="file_name">dbConfig.js</span></a><a href="../lib/mysql.js.html" class="source "><span class="base_path">lib / </span><span class="file_name">mysql.js</span></a><a href="../lib/mysqlConf.js.html" class="source "><span class="base_path">lib / </span><span class="file_name">mysqlConf.js</span></a><a href="../lib/requestValidator.js.html" class="source selected"><span class="base_path">lib / </span><span class="file_name">requestValidator.js</span></a><a href="../lib/sqlHelper.js.html" class="source "><span class="base_path">lib / </span><span class="file_name">sqlHelper.js</span></a><a href="../routes/favorite.js.html" class="source "><span class="base_path">routes / </span><span class="file_name">favorite.js</span></a><a href="../routes/feedback.js.html" class="source "><span class="base_path">routes / </span><span class="file_name">feedback.js</span></a><a href="../routes/match.js.html" class="source "><span class="base_path">routes / </span><span class="file_name">match.js</span></a><a href="../routes/question.js.html" class="source "><span class="base_path">routes / </span><span class="file_name">question.js</span></a><a href="../routes/questionresponse.js.html" class="source "><span class="base_path">routes / </span><span class="file_name">questionresponse.js</span></a><a href="../routes/user.js.html" class="source "><span class="base_path">routes / </span><span class="file_name">user.js</span></a><a href="../server.js.html" class="source "><span class="base_path">. / </span><span class="file_name">server.js</span></a><a href="../test/user.js.html" class="source "><span class="base_path">test / </span><span class="file_name">user.js</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>requestValidator.js</h1><div class="filepath">lib/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div>
+</td><td class="code"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">_</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;underscore&quot;</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">parse</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">string</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">val</span><span class="p">.</span><span class="nx">toString</span><span class="p">();</span>
+  <span class="p">},</span>
+  <span class="kr">int</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">num</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="nb">isNaN</span><span class="p">(</span><span class="nx">num</span><span class="p">))</span>
+      <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">else</span>
+      <span class="k">return</span> <span class="nx">num</span>
+  <span class="p">},</span>
+  <span class="kr">float</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="kd">var</span> <span class="nx">num</span> <span class="o">=</span> <span class="nb">parseFloat</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="nb">isNaN</span><span class="p">(</span><span class="nx">num</span><span class="p">))</span>
+      <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">else</span>
+      <span class="k">return</span> <span class="nx">num</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">makeValidator</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">reqMap</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="nx">res</span><span class="p">,</span><span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">proceed</span> <span class="o">=</span> <span class="kc">false</span>
+    <span class="p">,</span> <span class="nx">reqKeys</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>figuring out if the request passes</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="k">if</span><span class="p">(</span><span class="nx">reqMap</span><span class="p">.</span><span class="nx">canOnly</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">reqMap</span><span class="p">.</span><span class="nx">canOnly</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="nx">reqKeys</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><p>this test dictates that the request must have the keys in canOnly and none other</p>
+</td><td class="code"><div class="highlight"><pre>        <span class="nx">proceed</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">chain</span><span class="p">(</span><span class="nx">reqKeys</span><span class="p">)</span>
+              <span class="p">.</span><span class="nx">intersection</span><span class="p">(</span><span class="nx">reqMap</span><span class="p">.</span><span class="nx">canOnly</span><span class="p">)</span>
+              <span class="p">.</span><span class="nx">value</span><span class="p">().</span><span class="nx">length</span> <span class="o">===</span> <span class="nx">reqMap</span><span class="p">.</span><span class="nx">canOnly</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">reqMap</span><span class="p">.</span><span class="nx">must</span><span class="p">)</span> <span class="p">{</span></pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><p>this test dictates that the request must have the keys in reqMap.must</p>
+</td><td class="code"><div class="highlight"><pre>      <span class="nx">proceed</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">chain</span><span class="p">(</span><span class="nx">reqMap</span><span class="p">.</span><span class="nx">must</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+              <span class="k">return</span> <span class="nx">_</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">reqKeys</span><span class="p">,</span><span class="nx">key</span><span class="p">);</span>
+            <span class="p">})</span>
+            <span class="p">.</span><span class="nx">every</span><span class="p">()</span>
+            <span class="p">.</span><span class="nx">value</span><span class="p">();</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="nx">proceed</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>   
+    
+  
+
+    <span class="k">if</span><span class="p">(</span><span class="nx">proceed</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">reqMap</span><span class="p">.</span><span class="nx">omit</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">req</span><span class="p">.</span><span class="nx">body</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">omit</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">,</span><span class="nx">reqMap</span><span class="p">.</span><span class="nx">omit</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">reqMap</span><span class="p">.</span><span class="nx">types</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">_</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">reqMap</span><span class="p">.</span><span class="nx">types</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">if</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">has</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">,</span><span class="nx">key</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">parse</span><span class="p">[</span><span class="nx">type</span><span class="p">](</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
+          <span class="p">}</span>
+        <span class="p">});</span>
+      <span class="p">}</span>
+      <span class="nx">next</span><span class="p">();</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">400</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+</pre></div></td></tr></tbody></table><div id="generated">generated Tue Apr 30 2013 17:31:03 GMT-0400 (EDT)  </div><div id="projectname"><a href="../index.html">Modfinder</a></div></div></body></html>

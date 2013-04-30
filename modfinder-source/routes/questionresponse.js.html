@@ -1,0 +1,128 @@
+<!DOCTYPE html><html><head><title>questionresponse.js</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../index.html" class="source"><span class="file_name">README</span></a><a href="../lib/dbConfig.js.html" class="source "><span class="base_path">lib / </span><span class="file_name">dbConfig.js</span></a><a href="../lib/mysql.js.html" class="source "><span class="base_path">lib / </span><span class="file_name">mysql.js</span></a><a href="../lib/mysqlConf.js.html" class="source "><span class="base_path">lib / </span><span class="file_name">mysqlConf.js</span></a><a href="../lib/requestValidator.js.html" class="source "><span class="base_path">lib / </span><span class="file_name">requestValidator.js</span></a><a href="../lib/sqlHelper.js.html" class="source "><span class="base_path">lib / </span><span class="file_name">sqlHelper.js</span></a><a href="../routes/favorite.js.html" class="source "><span class="base_path">routes / </span><span class="file_name">favorite.js</span></a><a href="../routes/feedback.js.html" class="source "><span class="base_path">routes / </span><span class="file_name">feedback.js</span></a><a href="../routes/match.js.html" class="source "><span class="base_path">routes / </span><span class="file_name">match.js</span></a><a href="../routes/question.js.html" class="source "><span class="base_path">routes / </span><span class="file_name">question.js</span></a><a href="../routes/questionresponse.js.html" class="source selected"><span class="base_path">routes / </span><span class="file_name">questionresponse.js</span></a><a href="../routes/user.js.html" class="source "><span class="base_path">routes / </span><span class="file_name">user.js</span></a><a href="../server.js.html" class="source "><span class="base_path">. / </span><span class="file_name">server.js</span></a><a href="../test/user.js.html" class="source "><span class="base_path">test / </span><span class="file_name">user.js</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>questionresponse.js</h1><div class="filepath">routes/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div>
+</td><td class="code"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">_</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;underscore&#39;</span><span class="p">)</span>
+<span class="p">,</span> <span class="nx">validator</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../lib/requestValidator&#39;</span><span class="p">)</span>
+<span class="p">,</span> <span class="nx">async</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;async&#39;</span><span class="p">)</span>
+<span class="p">,</span> <span class="nx">sqlHelper</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;../lib/sqlHelper&quot;</span><span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">finishQuestionResponse</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="nx">res</span><span class="p">,</span><span class="nx">op</span><span class="p">,</span><span class="nx">mysql</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">async</span><span class="p">.</span><span class="nx">series</span><span class="p">([</span>
+      <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">mysql</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="s2">&quot;UPDATE `user` SET `numResponses` = `numResponses` &quot;</span><span class="o">+</span><span class="nx">op</span><span class="o">+</span><span class="s2">&quot; 1 WHERE `userID` = ? ;&quot;</span><span class="p">,[</span><span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">userID</span><span class="p">],</span><span class="nx">cb</span><span class="p">);</span>
+      <span class="p">},</span>
+      <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">mysql</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="s2">&quot;UPDATE `question` SET `numResponses` = `numResponses` &quot;</span><span class="o">+</span><span class="nx">op</span><span class="o">+</span><span class="s2">&quot; 1 WHERE `questionID` = ? ;&quot;</span><span class="p">,[</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">questionID</span><span class="p">],</span><span class="nx">cb</span><span class="p">);</span>
+      <span class="p">},</span>
+      <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">mysql</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="s2">&quot;UPDATE  `answer` SET `numResponses` = `numResponses` &quot;</span><span class="o">+</span><span class="nx">op</span><span class="o">+</span><span class="s2">&quot; 1 WHERE `answerID` = ? ;&quot;</span><span class="p">,[</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">answerID</span><span class="p">],</span><span class="nx">cb</span><span class="p">)</span>
+      <span class="p">}</span>
+    <span class="p">],</span><span class="kd">function</span><span class="p">(</span><span class="nx">errs</span><span class="p">,</span><span class="nx">results</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">_</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">(</span><span class="nx">errs</span><span class="p">))</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">errs</span><span class="p">);</span>
+      <span class="nx">clientPool</span><span class="p">.</span><span class="nx">releaseConnection</span><span class="p">(</span><span class="nx">mysql</span><span class="p">);</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nx">clientPool</span><span class="p">.</span><span class="nx">releaseConnection</span><span class="p">(</span><span class="nx">mysql</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">op</span> <span class="o">===</span> <span class="s2">&quot;+&quot;</span><span class="p">)</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">numResponses</span><span class="o">++</span><span class="p">;</span>
+    <span class="k">else</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">numResponses</span><span class="o">--</span><span class="p">;</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">({</span><span class="nx">status</span><span class="o">:</span><span class="s2">&quot;success&quot;</span><span class="p">});</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">create</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">validate</span><span class="o">:</span><span class="nx">validator</span><span class="p">.</span><span class="nx">makeValidator</span><span class="p">({</span>
+    <span class="nx">canOnly</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;answerID&quot;</span><span class="p">,</span><span class="s2">&quot;questionID&quot;</span><span class="p">,</span><span class="s2">&quot;importance&quot;</span><span class="p">,</span><span class="s2">&quot;explanation&quot;</span><span class="p">,</span><span class="s2">&quot;acceptable&quot;</span><span class="p">],</span>
+    <span class="nx">types</span><span class="o">:</span><span class="p">{</span>
+      <span class="nx">questionID</span><span class="o">:</span><span class="s2">&quot;int&quot;</span><span class="p">,</span>
+      <span class="nx">answerID</span><span class="o">:</span><span class="s2">&quot;int&quot;</span><span class="p">,</span>
+      <span class="nx">importance</span><span class="o">:</span><span class="s2">&quot;float&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}),</span>
+  <span class="nx">route</span> <span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">set</span><span class="p">({</span><span class="s2">&quot;Content-Type&quot;</span><span class="o">:</span><span class="s2">&quot;text/json&quot;</span><span class="p">});</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">acceptable</span><span class="p">)){</span>
+      <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">acceptable</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="p">}</span>
+    <span class="nx">clientPool</span><span class="p">.</span><span class="nx">acquire</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="nx">mysql</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;can&#39;t get mysql con&quot;</span><span class="p">,</span><span class="nx">err</span><span class="p">);</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="nx">sqlHelper</span><span class="p">.</span><span class="nx">insert</span><span class="p">(</span><span class="nx">mysql</span><span class="p">,</span><span class="s2">&quot;questionResponse&quot;</span><span class="p">,{</span>
+        <span class="nx">userID</span><span class="o">:</span>     <span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">userID</span><span class="p">,</span>
+        <span class="nx">answerID</span><span class="o">:</span>   <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">answerID</span><span class="p">,</span>
+        <span class="nx">questionID</span><span class="o">:</span>   <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">questionID</span><span class="p">,</span>
+        <span class="nx">importance</span><span class="o">:</span>   <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">importance</span><span class="p">,</span>
+        <span class="nx">explanation</span><span class="o">:</span>  <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">explanation</span><span class="p">,</span>
+        <span class="nx">numAcceptable</span><span class="o">:</span>  <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">acceptable</span><span class="p">.</span><span class="nx">length</span>
+      <span class="p">},</span>
+      <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+          <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;error inserting into mysql&quot;</span><span class="p">,</span><span class="nx">err</span><span class="p">);</span>
+          <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+          <span class="nx">clientPool</span><span class="p">.</span><span class="nx">releaseConnection</span><span class="p">(</span><span class="nx">mysql</span><span class="p">);</span>
+          <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">_</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">acceptable</span><span class="p">))</span> <span class="p">{</span>
+          <span class="kd">var</span> <span class="nx">insertQuery</span> <span class="o">=</span> <span class="p">[];</span>
+          <span class="nx">_</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">acceptable</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">acceptable</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">insertQuery</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+              <span class="nx">mysql</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="s2">&quot;INSERT INTO `acceptableResponse` (`userID`,`questionID`,`answerID`) VALUES (?,?,?) ;&quot;</span><span class="p">,[</span><span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">userID</span><span class="p">,</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">questionID</span><span class="p">,</span><span class="nx">acceptable</span><span class="p">],</span><span class="nx">cb</span><span class="p">);</span>
+            <span class="p">});</span>
+            <span class="nx">insertQuery</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+              <span class="nx">mysql</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="s2">&quot;UPDATE `answer` SET `numAccept` = `numAccept` + 1 WHERE `answerID` = ? ;&quot;</span><span class="p">,[</span><span class="nx">acceptable</span><span class="p">],</span><span class="nx">cb</span><span class="p">);</span>
+            <span class="p">});</span>
+          <span class="p">});</span>
+          <span class="nx">async</span><span class="p">.</span><span class="nx">series</span><span class="p">(</span><span class="nx">insertQuery</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">errs</span><span class="p">,</span><span class="nx">results</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">_</span><span class="p">.</span><span class="nx">isEmpty</span><span class="p">(</span><span class="nx">errs</span><span class="p">))</span> <span class="p">{</span>
+              <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;errs inserting into acceptable responses&quot;</span><span class="p">,</span><span class="nx">errs</span><span class="p">);</span>
+              <span class="nx">clientPool</span><span class="p">.</span><span class="nx">releaseConnection</span><span class="p">(</span><span class="nx">mysql</span><span class="p">);</span>
+              <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+              <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="nx">finishQuestionResponse</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="nx">res</span><span class="p">,</span><span class="s2">&quot;+&quot;</span><span class="p">,</span><span class="nx">mysql</span><span class="p">);</span>
+          <span class="p">});</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+          <span class="nx">finishQuestionResponse</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="nx">res</span><span class="p">,</span><span class="s2">&quot;+&quot;</span><span class="p">,</span><span class="nx">mysql</span><span class="p">);</span>
+        <span class="p">}</span> 
+      <span class="p">});</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="k">delete</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">validate</span><span class="o">:</span><span class="nx">validator</span><span class="p">.</span><span class="nx">makeValidator</span><span class="p">({</span>
+    <span class="nx">canOnly</span><span class="o">:</span><span class="p">[</span><span class="s1">&#39;questionResponseID&#39;</span><span class="p">],</span>
+    <span class="nx">types</span><span class="o">:</span><span class="p">{</span><span class="nx">questionResponseID</span><span class="o">:</span><span class="s2">&quot;int&quot;</span><span class="p">}</span>
+  <span class="p">}),</span>
+  <span class="nx">route</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">set</span><span class="p">({</span><span class="s2">&quot;Content-Type&quot;</span><span class="o">:</span><span class="s2">&quot;text/json&quot;</span><span class="p">});</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">sqlHelper</span><span class="p">.</span><span class="nx">requestHas</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">,[</span><span class="s2">&quot;questionResponseID&quot;</span><span class="p">])){</span>
+      <span class="nx">clientPool</span><span class="p">.</span><span class="nx">acquire</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="nx">mysql</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
+          <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;can&#39;t get mysql con&quot;</span><span class="p">,</span><span class="nx">err</span><span class="p">);</span>
+          <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+          <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nx">mysql</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span>
+          <span class="s2">&quot;DELETE FROM `questionresponse` WHERE `questionResponseID` = ? AND `userID` = ?; \</span>
+<span class="s2">          DELETE FROM `acceptableresponse` WHERE `questionID` = ? AND `userID` = ?&quot;</span><span class="p">,</span>
+          <span class="p">[</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">questionResponseID</span><span class="p">,</span><span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">userID</span><span class="p">,</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">questionID</span><span class="p">,</span><span class="nx">req</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">userID</span><span class="p">],</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="nx">result</span><span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span><span class="nx">err</span><span class="p">){</span>
+              <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;can&#39;t get mysql con&quot;</span><span class="p">,</span><span class="nx">err</span><span class="p">);</span>
+              <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+              <span class="nx">clientPool</span><span class="p">.</span><span class="nx">releaseConnection</span><span class="p">(</span><span class="nx">mysql</span><span class="p">);</span>
+              <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+            <span class="nx">finishQuestionResponse</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="nx">res</span><span class="p">,</span><span class="s2">&quot;-&quot;</span><span class="p">,</span><span class="nx">mysql</span><span class="p">);</span>
+          <span class="p">});</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+</pre></div></td></tr></tbody></table><div id="generated">generated Tue Apr 30 2013 17:31:04 GMT-0400 (EDT)  </div><div id="projectname"><a href="../index.html">Modfinder</a></div></div></body></html>
