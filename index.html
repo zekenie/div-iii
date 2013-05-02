@@ -159,11 +159,12 @@
 				</p>
 			</section>
 
-			<!-- <iframe src="http://player.vimeo.com/video/51937862" width="400" height="300" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> -->
-
-			<!-- TODO 
-				1. Add citation to GP book
-			-->
+			<section>
+				<h2>Status</h2>
+				<p>
+					This project is open source and on <a href="https://github.com/zekenie/GPJS">github</a>.
+				</p>
+			</section>
 		</article>
 		<article id="chemGP">
 			<div class="page-header">
@@ -189,6 +190,9 @@
 <p>I also needed to modify the code to include separate data categories for training and validation of the programs. Certain reactions were randomly selected to train (be used in the fitness evaluation) while others were left to evaluate the fitness of best programs from the run. Because these data were not used in the training, their incorporation reduces the degree to which the evolved programs are biased towards the dataset. </p>
 
 <p>I presented this project at a <a href="http://4cbc.cs.umass.edu/" target="_blank">4CBC</a> event in November 2012. The slides from this presentation are avalible <a href="p1113.html">here</a>.
+
+			<p><strong>Status:</strong> This project is open source and on <a href="https://github.com/zekenie/ChemGP">github</a></p>
+
 			</section>
 		</article>
 
@@ -216,6 +220,8 @@
 <p>Kira decided to keep working. She changed her Div III. She wanted to run a feasibility study on real smokers to see if Carrot Stick really helped people. To do this, I had to do some ongoing work. I built out different views for the app for participants in the control group and participants in the treatment group. I also designed and developed a survey form that combined three tobacco dependance measurements that Kira found. Finally, after noticing that people forgot to call into Carrot Stick, I made an SMS reminder system.</p>
 
 <p>Carrot Stick was built with PHP, MySQL, the <a href="http://www.twilio.com/voice" target="_blank">Twilio voice API</a>, <a href="http://jquery.com" target="_blank">jQuery</a>, and <a href="http://underscorejs.org/" target="_blank">underscore.js</a>. It was deployed on the <a href="http://en.wikipedia.org/wiki/Platform_as_a_service" target="_blank">PaaS</a>	 <a href="http://heroku.com" target="_blank">Heroku</a>. It was the first time I deployed on a PaaS.</p>
+
+		<p><strong>Status:</strong> The status of this project is unclear. We may continue development with grant money in the fall. If we don't we will open source the project</p>
 			
 	
 		</article>
@@ -291,6 +297,9 @@
 <p>I'm currently working on adapting Trext to run on the system. I haven't yet purchased the GSM modem or begun that side of development, mostly due to cash flow problems. But I expect to be able to make the purchase next week. </p>
 
 <p>After graduation I have plans to take two prototypes to Haiti and meet my friend Jean. Jean works for <a href="http://www.oursoil.org/">OurSoil</a>. They want to test our system. They will use it for following up on trainings they run, sending out surveys, reminders, and educational information. If the test run goes well, we could easily replicate these systems and send them elsewhere.</p>
+
+			
+			<p><strong>Status:</strong> Code is owned by Trext, Inc.</p>
 		</article>
 
 		<article id="modfinder">
@@ -402,7 +411,34 @@ console.log(numMatches);
 
 		<article id="opinion">
 			<div class="page-header"><h1>Opinion Piece</h1></div>
-			<p>The article will be included here after it is published on May 1st. I can provide manuscripts upon request.</p>
+			<p><a href="http://www.the-scientist.com/?articles.view/articleNo/35249/title/Researchers--Hire-Hackers/">Origanal Article</a></p>
+
+			<div class="well">
+				<p>Heroic investigations of life and disease have put us on the verge of a health-care revolution. Meanwhile, the software industry is booming; tech startups appear faster than you can say "medical informatics." But at the intersection of these two complex fields lies dysfunction. Researchers and clinicians, shackled to software that no one in their right mind would use voluntarily, spend countless hours manually copying data from one system to another. And this separation of software development from clinical research is costing lives.</p>
+
+<p><strong>Juggling data</strong></p>
+
+<p>When paper records predominated in medicine, research assistants or medical students manually screened health records for certain diagnoses or laboratory values that would qualify patients for prospective clinical trials. Upon identifying suitable trial candidates and receiving their consent, researchers manually extracted the data of interest, recording the information on yet more paper. Retrospective cohort studies similarly took innumerable hours of searching health records in dusty basements. Data transfer and analyses followed.</p>
+
+<p>Now, the health-care system is in the process of turning away from paper records in favor of digital storage. Research assistants toil no more in dusty basements. Research workflow, however, is stuck in an earlier century. Today's research assistants still use their eyes to screen health records, but on computer monitors rather than paper. Once consent is obtained, relevant information is typically copied by hand from the digital records onto paper, then later recopied into digital research databases.</p>
+
+<p>This is a recipe for bad data. Like the children's game "telephone," in which a group whispers a sentence from one to another, the message can become garbled. In the past, this was unavoidable. Today, there is no excuse.</p>
+
+<p><strong>Time points</strong></p>
+
+<p>One consequence of this disorganization is inconsistency in when key measurements are taken. A hypothetical study might seek to determine if a specific protein level in patients' blood 12 hours after arrival at the hospital is predictive of their outcome. Researchers would compile clinical data at this arbitrary time point, including vital signs, routine clinical laboratory values, and any study-specific measurements. The problem is that none of these data are collected at exactly 12 hours. Routine clinical measurements might be taken only in the morning, for example. Even the study-specific measurements, which the researchers control, may be off for logistical reasons. Such time differences are not routinely noted in the research database, resulting in the lowered statistical power of any conclusions to an unknown degree.</p>
+
+<p>Even worse, important information is often lost: data that are repetitively measured in the clinical setting, like most vital signs, are only transferred to the research database at certain intervals; data measured at in-between times are not saved. This makes it impossible to look at specific trends that could lead to new types of data analysis.</p>
+
+<p><strong>There is a better way</strong></p>
+
+<p>If clinical researchers partnered with computer experts, we could transform the way data are collected, stored, and analyzed. We could reduce human error by mandating fewer manual steps, making research faster and data cleaner. Involving programmers in clinical research could also support more advanced data structures that would allow researchers to record infinite numbers of data points, and display them in simple scatter plots to identify optimal time points. And perhaps most importantly, research assistants would be free to spend more time obtaining consent from patients, reviewing literature, and looking for trends in the data, instead of acting as human ethernet cables transferring information between different computer systems and paper records, and back again.</p>
+
+
+<p>Relying more on computer systems would also make it easier for clinical researchers to find trial participants, by screening for certain lab values in a simple database query. All that is required is commonsense application programming interfaces (APIs), established protocols that allow different software platforms to communicate. In May 2011, realizing the emerging importance of these tools, President Obama directed every federal agency to have an API. Most clinical research teams do not have any APIs, nor the programming expertise to operate and maintain them.</p>
+
+<p>Finally, a more integrated system could also improve treatment. As the deluge of omics data continues, clinical researchers are becoming more and more dependent on computer software to make sense of it all. How can we gain insight from the 3 billion base pairs in the human genome when we can't effectively store and manipulate the 30-odd measures, such as blood pressure and heart rate, that we've had for 50 years?</p>
+			</div>
 
 			<p>Writing a short essay is much harder than writing a paper for school. The hardest part for me was that I didn't know what I wanted out of it when I got started. I had something that was bothering me and I thought others should know about. In the summer, I saw that clinical researchers were using computers wrong. This had implications for everyone who's ever been touched by disease. When I was talking to my mom about it, she suggested I write an Op-Ed for the New York Times. My first draft was written with that intention. It was conversational, in first person. I showed it to a lot of people and got generally positive feedback. People felt I should indeed try to get the message out. There was no consensus on the format.</p>
 
