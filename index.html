@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-	<link rel="stylesheet" href="http://twitter.github.io/bootstrap/assets/css/bootstrap.css"/>
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css"/>
 	<link rel="stylesheet" href="http://twitter.github.io/bootstrap/assets/js/google-code-prettify/prettify.css"/>
 	<script src="http://twitter.github.io/bootstrap/assets/js/google-code-prettify/prettify.js"></script>
 	<style>
@@ -155,7 +155,7 @@
 			<section>
 				<h2>What would come next</h2>
 				<p>
-					To mitigate the memory problem, I would send the programs to a <a href="http://nodejs.org/" target="_blank">node.js</a> server to be stored. Node.js has the capacity for real time client-server interaction with the use of websockets. This means once programs are created and evaluated, they can be stored elsewhere. This frees the client to run as long as it needs to. It also opens up the door for multiple computers all running the same problem. 
+					To mitigate the memory problem, I would send the programs to a <a href="http://nodejs.org/" target="_blank">node.js</a> server to be stored. Node.js has the capacity for real time client-server interaction with the use of websockets. This means once programs are created and evaluated, they can be stored elsewhere. This frees the client to run as long as it needs to. It also opens up the door for multiple computers all running the same problem.
 				</p>
 			</section>
 
@@ -209,7 +209,7 @@
 				<p>Smoking is the leading cause of preventable death in the US (Danaei, Ding et al. 2009), and accounts for 1 in 10 deaths worldwide (Park, Tudiver et al. 2012). Information is not enough to change behavior. Many smoking cessation interventions have harnessed the power of social relationships, however none have provided direct messages in loved ones' voices. The literature shows that "The person-to-person spread of smoking cessation appears to have been a factor in the population level decline in smoking seen in recent decades" (Christakis and Fowler 2008). People are connected, as is their health. Social relationships and expanded agency can be used to help people achieve health goals like smoking cessation. Services such as counseling may have short term impacts on smoking habits, but concern from a loved one may have lasting effects.</p>
 					<br/>
 				<p>
-					A feasibility study of the program "CarrotStick" was conducted to access a novel smoking cessation intervention. CarrotStick empowers smokers to quit by providing unique support from family and friends. A smoker signs up online, invites friends to record messages and when she feels the urge, calls a number and hears either a "carrot message" (positive reinforcement) or a "stick" (tough love). Participants were smokers over the age of 18, who have the intention to quit. They were recruited through posters and online advertisements, leading them to the study website. Participants completed three surveys throughout the intervention, assessing smoking behavior, satisfaction with CarrotStick and other feasibility items. 
+					A feasibility study of the program "CarrotStick" was conducted to access a novel smoking cessation intervention. CarrotStick empowers smokers to quit by providing unique support from family and friends. A smoker signs up online, invites friends to record messages and when she feels the urge, calls a number and hears either a "carrot message" (positive reinforcement) or a "stick" (tough love). Participants were smokers over the age of 18, who have the intention to quit. They were recruited through posters and online advertisements, leading them to the study website. Participants completed three surveys throughout the intervention, assessing smoking behavior, satisfaction with CarrotStick and other feasibility items.
 	The results being analyzed include assessing the number of recorded messages, types of messages, frequency of listening, attrition rates, impacts of reminders, software satisfaction, and limited smoking cessation efficacy.
 	This study will provide insight into the impact and feasibility of implementing CarrotStick on a larger scale.
 				</p>
@@ -222,8 +222,8 @@
 <p>Carrot Stick was built with PHP, MySQL, the <a href="http://www.twilio.com/voice" target="_blank">Twilio voice API</a>, <a href="http://jquery.com" target="_blank">jQuery</a>, and <a href="http://underscorejs.org/" target="_blank">underscore.js</a>. It was deployed on the <a href="http://en.wikipedia.org/wiki/Platform_as_a_service" target="_blank">PaaS</a>	 <a href="http://heroku.com" target="_blank">Heroku</a>. It was the first time I deployed on a PaaS.</p>
 
 		<p><strong>Status:</strong> The status of this project is unclear. We may continue development with grant money in the fall. If we don't we will open source the project</p>
-			
-	
+
+
 		</article>
 
 		<article id="trext">
@@ -298,7 +298,7 @@
 
 <p>After graduation I have plans to take two prototypes to Haiti and meet my friend Jean. Jean works for <a href="http://www.oursoil.org/">OurSoil</a>. They want to test our system. They will use it for following up on trainings they run, sending out surveys, reminders, and educational information. If the test run goes well, we could easily replicate these systems and send them elsewhere.</p>
 
-			
+
 			<p><strong>Status:</strong> Code is owned by Trext, Inc.</p>
 		</article>
 
@@ -368,7 +368,7 @@ connection.query("SELECT * FROM `user` WHERE `numResponses` > 5; SELECT * FROM `
 							_.pluck(i.responses, "questionID"),
 							_.pluck(j.responses, "questionID")
 						);
-			
+
 			if(overlap.length > 6) {
 				var points = 0;
 				var possible = 0;
@@ -474,7 +474,7 @@ console.log(numMatches);
 
 				<p>Problem #2: We as a nation (planet?) aren't training programmers fast enough. This is one of the causes for problem #1. Programming can be taught effectively to children. It just isn't. In fact, teaching programming to kids has been anecdotally associated with higher test scores in math and science. Sometimes kids get so good at coding that are ready for professional work in high school.</p>
 
-				<p>Solution to both:  Let's think about a company. This company would make most of its money by doing web development contracts. We would bid 30% lower than the market, insuring more reliable employment. We might even be in the position to pick and choose our clients. This part of the company would produce significant revenue because we'd take on more projects than we could reasonably handle (hang on, I'll explain how this could ever work in a second).</p>
+				<p>Solution to both: Let's think about a company. This company would make most of its money by doing web development contracts. We would bid 30% lower than the market, insuring more reliable employment. We might even be in the position to pick and choose our clients. This part of the company would produce significant revenue because we'd take on more projects than we could reasonably handle (hang on, I'll explain how this could ever work in a second).</p>
 
 				<p>The company would also interact with kids in middle school and high school. We'd do development tutoring in very small groups charing hourly. This aspect of the business wouldn't be a cash cow either, but it would pay for itself. Kids who found they liked coding could go to an intensive development bootcamp over the summer. After the bootcamp, they would be eligible for apprenticeships. Apprentices would be payed $10 / hour, and work a lot. These kids would also be the ones that loved it enough to go to the bootcamp. By this time, they'd actually be pretty good. They'd be working independently. Their mentors would review their work and help them get better, but they'd actually be doing stuff. This is how the business model would work. These kids would be worth sooooo much more than $10 / hour. They'd be doing client work that would get reviewed by the staff developers.</p>
 
@@ -514,7 +514,7 @@ console.log(numMatches);
 
 				<p>Writing is different from language because it extends humans' natural abilities. If you put two kids together and don't teach them, they will likely never be literate. Its also much harder to learn as an adult. People have decided that this technology is so important that it was included in UN Declaration of Human Rights. </p>
 
-				<p>So:</p> 
+				<p>So:</p>
 				<p>Language: innate, way of transferring ideas </p>
 				<p>Writing: technology, way of transferring ideas to different times, and remembering more</p>
 
@@ -524,7 +524,7 @@ console.log(numMatches);
 
 				<p>I'm not saying we should replace learning to read with learning to code; that's crazy. I'm just saying that its not even offered in most high schools. They have computer classes, just not coding classes. This is crazy. Its also pretty crazy to insist that kids memorize the Pythagorean therm, the krebs cycle, and have no understanding of the backbone of modern math and science: computers. For more on this:http://www.youtube.com/watch?v=60OVlfAUPJg </p>
 
-				<p>Also check out this info graphic that cites the Bereau of labor statistics, the College Board, and the Association for Computing Machinery. http://www.code.org/stats</p> 
+				<p>Also check out this info graphic that cites the Bereau of labor statistics, the College Board, and the Association for Computing Machinery. http://www.code.org/stats</p>
 			</blockquote>
 		</article>
 		<article id="conclusion">
